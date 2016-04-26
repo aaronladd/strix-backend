@@ -33,7 +33,7 @@ sub editContactsGroup {
 		if($_ eq ";$contactGroupFields[3] $group_id"){
 			$match=true;
 		} else if($match) {
-			print GROUPFILE "\t$contactGroupFields[$count] $dataPull[$count+2]\n"
+			print GROUPFILE "$contactGroupFields[$count] $dataPull[$count+2]\n"
 			$count++;
 			if($count == $#contactFields){
 				$match=false;
