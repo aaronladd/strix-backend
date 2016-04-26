@@ -58,7 +58,7 @@ sub dataBasePull {
 	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
 	$queryList[1]="SELECT * FROM nagios_contact_groups WHERE account_id='$accountId'";
 	
-	$sth=$dbh->prepare($query[0]) || die "Prepare failed: $DBI::errstr\n";
+	$sth=$dbh->prepare($queryList[$queryNum]) || die "Prepare failed: $DBI::errstr\n";
 	
 	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
 	
