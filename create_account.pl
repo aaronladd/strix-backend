@@ -118,8 +118,11 @@ sub defaultContact {
 		if($currentLine eq $contactFields[$count] && $count < $#{$dataPull->[0]}){
 			print CONTACTFILE "$contactFields[$count] $dataPull->[0][$count]\n";
 			$count++;
+		} elsif($currentLine eq $contactFields[$count]){
+			print CONTACTFILE ";$contactFields[$count]\n";
+			$count++;
 		} elsif($currentLine) {
-			print CONTACTFILE "$currentLine\n"
+			print CONTACTFILE "$currentLine\n";
 		}
 	}
 }
