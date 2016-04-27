@@ -104,8 +104,8 @@ sub defaultContact {
 	my $currentLine;
 	my $contactFile="$newAcctPath/contacts/contacts.cfg";
 	my $contactBackupFile="$newAcctPath/contacts/contacts.bkp_cfg";
-	my @defaultFields=(";contact_id", "contact_name", "email");
-	my @contactFields=("alias", "use", "contactgroups", "address1", "address2");
+	my @defaultFields=(";contact_id", "contact_name", "email", "use");
+	my @contactFields=("alias", "contactgroups", "address1", "address2");
 	
 	rename $contactFile, $contactBackupFile;
 		
@@ -121,7 +121,9 @@ sub defaultContact {
 			print CONTACTFILE "$defaultFields[1] $dataPull->[0][1]\n";
 		} elsif($currentLine eq $defaultFields[2]){
 			print CONTACTFILE "$defaultFields[2] $dataPull->[0][7]\n";
-		} elsif($currentLine eq $contactFields[$count] && $count < $#contactFields){
+		} elsif($currentLine eq $defaultFields[3]){
+			print CONTACTFILE "$defaultFields[3] $dataPull->[0][3]\n";
+		} elsif($currentLine eq $contactFields[$count] && $count < $#contactFields+1){
 			print CONTACTFILE ";$contactFields[$count]\n";
 			$count++;
 		} elsif($currentLine) {
@@ -129,7 +131,6 @@ sub defaultContact {
 		}
 	}
 }
-
 sub dataBaseConnection {
 	my $dsn='dbi:mysql:strixdb';
 	my $user='nagiTest';
