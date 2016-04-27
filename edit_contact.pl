@@ -18,12 +18,11 @@ sub main {
 }
 
 sub rebuildContact {
-	my ($nagAcctPath, $accountId, $count, $contactId);
+	my ($nagAcctPath, $count, $contactId);
 	$nagAcctPath=$_[0];
-	$accountId=$_[1];
 	$count=0;
 	$contactId=0;
-	my $dataPull=dataBasePull(dataBaseConnection(),$accountId,1);
+	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
 	my $contactFile="$nagAcctPath/contacts/contacts.cfg";
 	my $contactBackup="$nagAcctPath/contacts/contacts.bkp_cfg";
 	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2", "host_notifications_enabled", "service_notifications_enabled");
