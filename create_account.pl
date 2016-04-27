@@ -17,7 +17,9 @@ sub main {
 }
 
 sub fileCreation{
-	my ($newAcctPath, $count, $line, $newHostFile)=$_[0], 0;
+	my $newAcctPath=$_[0];
+	my $count=0;
+	my ($line, $newHostFile);
 	my @newDirectories=("contacts", "hosts");
 	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
 	my @contactGroupFields=(";group_id", "contactgroup_name", "alias", "members");
