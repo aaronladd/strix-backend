@@ -99,7 +99,9 @@ sub fileCreation{
 
 sub defaultContact {
 	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
-	my ($newAcctPath, $count, $currentLine)=$_[0],0;
+	my $newAcctPath=$_[0];
+	my $count=0;
+	my $currentLine;
 	my $contactFile="$newAcctPath/contacts/contacts.cfg";
 	my $contactBackupFile="$newAcctPath/contacts/contacts.bkp_cfg";
 	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
