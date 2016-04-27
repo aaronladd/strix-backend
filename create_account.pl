@@ -104,36 +104,22 @@ sub defaultContact {
 	my $currentLine;
 	my $contactFile="$newAcctPath/contacts/contacts.cfg";
 	my $contactBackupFile="$newAcctPath/contacts/contacts.bkp_cfg";
-	my @defaultFields=(";contact_id", "contact_name", "email", "use");
-	my @contactFields=("alias", "contactgroups", "address1", "address2");
+	my @contactFields=(";contact_id 01", "contact_name", ";alias", "use", ";contactgroups", "email", ";address1", ";address2", "host_notifications_enabled 1", "service_notifications_enabled 1");
+	
+	$contactFields[1]="$contactFields[1] $dataPull->[0][1]";
+	$contactFields[3]="$contactFields[3] $dataPull->[0][3]";
+	$contactFields[5]="$contactFields[5] $dataPull->[0][7]";
 	
 	rename $contactFile, $contactBackupFile;
 		
 	open CONTACTFILE, ">$contactFile" or die $!;
-	open CONTACTBACKUP, "<", $contactBackupFile or die $!;
-	
-	while(<CONTACTBACKUP>){
-		chomp();
-		$currentLine=$_;
-		if($currentLine eq $defaultFields[0]){
-			print CONTACTFILE "$defaultFields[0] 01\n";
-		} elsif($currentLine eq $defaultFields[1]){
-			print CONTACTFILE "$defaultFields[1] $dataPull->[0][1]\n";
-		} elsif($currentLine eq $defaultFields[2]){
-			print CONTACTFILE "$defaultFields[2] $dataPull->[0][7]\n";
-		} elsif($currentLine eq $defaultFields[3]){
-			print CONTACTFILE "$defaultFields[3] $dataPull->[0][3]\n";
-		} elsif($currentLine eq $contactFields[$count]){
-			print CONTACTFILE ";$contactFields[$count]\n";
-			$count++;
-		} elsif($currentLine) {
-			print CONTACTFILE "$currentLine\n";
-		}
-		if($count >= $#contactFields){
-			$count=0;
-		}
+	foreach $line (@contactFields){
+		print CONTACTFILE "$line\n";
+	}
+	close CONTACTFILE;
 	}
 }
+
 sub dataBaseConnection {
 	my $dsn='dbi:mysql:strixdb';
 	my $user='nagiTest';
