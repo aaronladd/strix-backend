@@ -9,49 +9,47 @@ main(@ARGV);
 
 sub main {
 	my ($accountId)=$_[0];
-	my @email=dataBasePull(dataBaseConnection(),$accountId,0);
+	my $email=dataBasePull(dataBaseConnection(),$accountId,0);
 	my $nagAcctPath="/usr/local/nagios/etc/accounts/$email->[0][0]";
-	@email=();
 	
 	editContactsGroup($nagAcctPath, $accountId);
 }
 
 sub editContactsGroup {
-	my ($nagAcctPath, $accountID, $count, $match, $contactNumber, $currentLine)=$_[0], $_[1], 0, false, 0;
+	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],2);
+	my ($nagAcctPath, $count, $contactId);
+	$nagAcctPath=$_[0];
+	$count=0;
+	$groupId=0;
 	my $contactsGroupFile="$nagAcctPath/contacts/contacts_group.cfg";
 	my $contactsGroupBackup="$nagAcctPath/contacts/contacts_group.bkp_cfg";
-	my @contactGroupFields=("contactgroup_name", "alias", "members", "group_id");
-	my $dataPull=dataBasePull(dataBaseConnection(),$accountId,2);
+	my @contactGroupFields=(";group_id","contactgroup_name", "alias", "members");
+	my @newFields=();
 	
-	rename $contactsGroupFile $contactsGroupBackup;
 	
-	open GROUPFILE, ">$contactsGroupFile" or die $!;
-	open GROUPBACKUP, "<", $contactsGroupBackup or die $!;
-	
-	while(<GROUPBACKUP>){
-		chomp();
-		$currentLine=$_;
-		$dataPull->[$contactNumber][1]=substr $dataPull->[$contactNumber][1], -2, 2;
-		
-		if($currentLine eq ";$contactGroupFields[3] $dataPull->[$contactNumber][1]"){
-			$match=true;
-		} else if($match) {
-			print GROUPFILE "$contactGroupFields[$count] $dataPull->[$count+2]\n"
+	rename $contactsGroupFile, $contactsGroupBackup;
+
+	open CONTACTGROUPFILE, '>', "$contactsGroupFile" or die $!;
+
+	while($groupId < $#{$dataPull->[0]}){
+		$dataPull->[$groupId][$count]=substr $dataPull->[$groupId][$count], -2, 2;
+		for $count (0 .. $#contactGroupFields){
+			push @newFields, "$contactGroupFields[$count] $dataPull->[$contactId][$count+1]";
 			$count++;
-			if($count == $#contactFields){
-				$match=false;
-				$contactNumber++;
-			}
-		} else if(eof(GROUPBACKUP)){
-			#separate out the new row to add to the end of the file. From the db pull.
-			addGroup($contactsGroupFile, @newGroup);
-		} else if($currentLine){
-			print GROUPFILE "$currentLine\n";
 		}
+		
+		print CONTACTGROUPFILE "define contactgroup {\n";
+		foreach my $line (@newFields){
+			print CONTACTGROUPFILE "\t$line\n";
+		}
+		print CONTACTGROUPFILE "}";
+		
+		@newFields=();
+		$count=0;
+		$contactId++;
 	}
 	
-	close GROUPFILE;
-	close GROUPBACKUP;
+	close CONTACTGROUPFILE;
 }
 
 
