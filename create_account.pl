@@ -16,81 +16,82 @@ sub main {
 	defaultContact($id, $email[0]);
 }
 
-sub fileCreation {
+sub fileCreation{
 	my $newAcctPath="/usr/local/nagios/etc/accounts/$_[0]";
-	
 	my @newDirectories=("contacts", "hosts");
-	my $x=0;
-		
+	my ($x, $line, $newHostFile, $FILE)=0;
+
 	my @contactFields=("contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
 	my @hostFields=("use", "host_name", "alias", "display_name", "address", "contact_groups");
 	my @serviceFields=("use", "host_name", "service_description", "check_command");
 	my @contactGroupFields=("contactgroup_name", "alias", "members");
-	
-	
+
 	if(-e "$newAcctPath") {
+		die "Unable to create $newAcctPath";
+	} else {
 		mkdir "$newAcctPath";
-    } else {
-		die "Unable to create $newAcctPath\n";
 	}
-	
-	while(@newDirectories) {
+		
+	while($x < 2) {
 		if (-e "$newAcctPath/$newDirectories[$x]") {
-			mkdir "$newAcctPath/$newDirectories[$x]";
+			die "Unable to create $newAcctPath/$newDirectories[$x]\n"
 		} else {
-			die "Unable to create $newAcctPath/$newDirectories[$x]\n";
+			mkdir "$newAcctPath/$newDirectories[$x]";
 		}
 		$x++;
 	}
-	if (open FILE, '>'."$newAcctPath/contacts/contacts.cfg") {
-		print FILE "define contact {\n";
-		
+
+	if (open $FILE, '>', "$newAcctPath/contacts/contacts.cfg") {
+		print $FILE "define contact {\n";
+
 		foreach $line (@contactFields){
-			print FILE "$line\n";
+			print $FILE "$line\n";
 		}
-		
-		print FILE "}";
-		close FILE;
+
+		print $FILE "}";
+		close $FILE;
 	} else {
 		die "Unable to open $newAcctPath/contacts/contacts.cfg\n";
 	}
-	
-	if(open FILE, '>'."$newAcctPath/contacts/contacts_group.cfg") {
-		print FILE "define contactgroup {\n";
-		
+
+	if(open $FILE, '>',"$newAcctPath/contacts/contacts_group.cfg") {
+		print $FILE "define contactgroup {\n";
+
 		foreach $line (@contactGroupFields){
-			print FILE "$line\n";
+			print $FILE "$line\n";
 		}
-		
-		print FILE "}";
-		close FILE;
+
+		print $FILE "}";
+		close $FILE;
 	} else {
-		die "\nUnable to open $newAcctPath/contacts/contacts_group.cfg\n";
-	}	
+		die "Unable to open $newAcctPath/contacts/contacts_group.cfg\n";
+	}
 	$x=1;
-	while ($x<5){
-		if ($x<2){
-			my $newHostFile="$newAcctPath/hosts/host$x.cfg";
+	while ($x<5) {
+		if($x<2) {
+			$newHostFile="$newAcctPath/hosts/host$x.cfg";
 		} else {
-			my $newHostFile="$newAcctPath/hosts/host$x.cfg_off";
+			$newHostFile="$newAcctPath/hosts/host$x.cfg_off";
 		}
-		if(open FILE, '>'."$newHostFile") {
-			print FILE "define host {\n";
-			
+		if(open $FILE, '>', "$newHostFile") {
+			print $FILE "define host {\n";
+
 			foreach $line (@hostFields){
-				print FILE "$line\n";
+				print $FILE "$line\n";
 			}
-			
-			print FILE "}\n\n";
-			
-			print FILE "define service {\n";
-			
+
+			print $FILE "}\n\n";
+
+			print $FILE "define service {\n";
+
 			foreach $line (@serviceFields){
-				print FILE "$line\n";
+				print $FILE "$line\n";
 			}
-			close FILE;
+
+			print $FILE "}";
+			close $FILE;
 		} else {
-			die "\nUnable to open $newAcctPath/hosts/host$x.cfg\n";
+			die "Unable to open $newHostFile";
 		}
 		$x++;
 	}
