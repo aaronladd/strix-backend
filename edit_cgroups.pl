@@ -17,11 +17,11 @@ sub main {
 }
 
 sub editContactsGroup {
-	my ($nagAcctPath, $accountID, $count, $match, @dataPull)=$_[0], $_[1], 0, false;
+	my ($nagAcctPath, $accountID, $count, $match, $contactNumber, $currentLine)=$_[0], $_[1], 0, false, 0;
 	my $contactsGroupFile="$nagAcctPath/contacts/contacts_group.cfg";
 	my $contactsGroupBackup="$nagAcctPath/contacts/contacts_group.bkp_cfg";
 	my @contactGroupFields=("contactgroup_name", "alias", "members", "group_id");
-	my @dataPull=dataBasePull(dataBaseConnection(),$accountId,2);
+	my $dataPull=dataBasePull(dataBaseConnection(),$accountId,2);
 	
 	rename $contactsGroupFile $contactsGroupBackup;
 	
@@ -30,19 +30,23 @@ sub editContactsGroup {
 	
 	while(<GROUPBACKUP>){
 		chomp();
-		if($_ eq ";$contactGroupFields[3] $group_id"){
+		$currentLine=$_;
+		$dataPull->[$contactNumber][1]=substr $dataPull->[$contactNumber][1], -2, 2;
+		
+		if($currentLine eq ";$contactGroupFields[3] $dataPull->[$contactNumber][1]"){
 			$match=true;
 		} else if($match) {
-			print GROUPFILE "$contactGroupFields[$count] $dataPull[$count+2]\n"
+			print GROUPFILE "$contactGroupFields[$count] $dataPull->[$count+2]\n"
 			$count++;
 			if($count == $#contactFields){
 				$match=false;
+				$contactNumber++;
 			}
 		} else if(eof(GROUPBACKUP)){
 			#separate out the new row to add to the end of the file. From the db pull.
 			addGroup($contactsGroupFile, @newGroup);
-		} else if($_){
-			print GROUPFILE "$_\n";
+		} else if($currentLine){
+			print GROUPFILE "$currentLine\n";
 		}
 	}
 	
