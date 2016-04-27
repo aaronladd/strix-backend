@@ -26,7 +26,7 @@ phone varchar(10),
 misc varchar(25),
 receive BOOLEAN NOT NULL,
 PRIMARY KEY (contact_id),
-FOREIGN KEY(account_id) REFERENCES account_information(account_id),
+FOREIGN KEY(account_id) REFERENCES account_information(account_id)
 );
 
 CREATE TABLE nagios_contact_groups(
@@ -47,7 +47,7 @@ alias varchar(25) NOT NULL,
 address varchar(45) NOT NULL,
 contact_groups TINYTEXT NOT NULL,
 PRIMARY KEY (host_id),
-FOREIGN KEY(account_id) REFERENCES account_information(account_id),
+FOREIGN KEY(account_id) REFERENCES account_information(account_id)
 );
 
 CREATE TABLE nagios_host_services(
