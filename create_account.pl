@@ -9,11 +9,11 @@ main(@ARGV);
 
 sub main {
 	my $accountId=$_[0];
-	my $email=dataBasePull(dataBaseConnection(),$accountId,0);
-	my $newAcctPath="/usr/local/nagios/etc/accounts/$email->[0][0]";
+	my $dataPull=dataBasePull(dataBaseConnection(),$accountId);
+	my $newAcctPath="/usr/local/nagios/etc/accounts/$dataPull->[0][7]";
 	
 	fileCreation($newAcctPath);	
-	defaultContact($newAcctPath,$accountId);
+	defaultContact($newAcctPath,$dataPull);
 }
 
 sub fileCreation{
@@ -39,21 +39,18 @@ sub fileCreation{
 	}
 
 	open CONTACTFILE, '>', "$newAcctPath/contacts/contacts.cfg") || die "Unable to open $newAcctPath/contacts/contacts.cfg\n";
-	
 	open CONTACTGROUPFILE, '>',"$newAcctPath/contacts/contacts_group.cfg" || die "Unable to open $newAcctPath/contacts/contacts_group.cfg\n";
-	
 	open HOSTFILE, '>', "$newAcctPath/hosts/host$count.cfg" || die "Unable to open $newAcctPath/hosts/host$count.cfg";
 		
-	close HOSTFILE;
-	close CONTACTGROUPFILE;
 	close CONTACTFILE;
-
+	close CONTACTGROUPFILE;
+	close HOSTFILE;
 	}
 }
 
 sub defaultContact {
-	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
 	my $newAcctPath=$_[0];
+	my $dataPull=$_[1];
 	my $count=0;
 	my $currentLine;
 	my $contactFile="$newAcctPath/contacts/contacts.cfg";
@@ -87,20 +84,12 @@ sub dataBaseConnection {
 sub dataBasePull {
 	my $dbh=$_[0];
 	my $accountId=$_[1];
-	my $queryNum=$_[2];
 	my ($sth, $dump, $query);
 	
-	if($queryNum == 0){
-		$query="SELECT email FROM account_information WHERE account_id='$accountId'";
-	} elsif ($queryNum == 1){
-		$query="SELECT * FROM account_information WHERE account_id='$accountId'";
-	}
+	$query="SELECT * FROM account_information WHERE account_id='$accountId'";
 	
 	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr\n";
-	
-	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
-	
-	#$sth->dump_results();  
+	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";  
 	$dump=$sth->fetchall_arrayref;
 	$sth->finish();
 	$dbh->disconnect || die "Failed to disconnect\n";
