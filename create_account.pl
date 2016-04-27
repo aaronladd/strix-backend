@@ -115,7 +115,7 @@ sub defaultContact {
 	while(<CONTACTBACKUP>){
 		chomp();
 		$currentLine=$_;
-		if($currentLine eq $contactFields[$count]){
+		if($currentLine eq $contactFields[$count] && $count < $#{$dataPull->[0]}){
 			print CONTACTFILE "$contactFields[$count] $dataPull->[0][$count]\n";
 			$count++;
 		} elsif($currentLine) {
