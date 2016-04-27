@@ -25,10 +25,9 @@ sub fileCreation{
 	my @serviceFields=("use", "host_name", "service_description", "check_command");
 
 	if(-e "$newAcctPath") {
-		mkdir "$newAcctPath";	
-	} else {
 		die "Unable to create $newAcctPath";
-
+	} else {
+		mkdir "$newAcctPath";
 	}
 		
 	while($count < 2) {
@@ -131,7 +130,10 @@ sub dataBaseConnection {
 }
 
 sub dataBasePull {
-	my ($dbh, $accountId, $queryNum, $sth, $dump, $query)=$_[0], $_[1], $_[2];
+	my $dbh=$_[0];
+	my $accountId=$_[1];
+	my $queryNum=$_[2];
+	my ($sth, $dump, $query);
 	
 	if($queryNum == 0){
 		$query="SELECT email FROM account_information WHERE account_id='$accountId'";
