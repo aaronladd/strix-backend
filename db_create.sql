@@ -6,7 +6,7 @@ use nagidb;
 
 CREATE TABLE account_information(
 account_id MEDIUMINT NOT NULL AUTO_INCREMENT,
-account_type SMALLINT NOT NULL,
+account_type varchar(30) NOT NULL,
 service BOOLEAN NOT NULL,
 create_date DATE NOT NULL,
 email varchar(25) NOT NULL,
@@ -17,15 +17,16 @@ UNIQUE (email)
 CREATE TABLE nagios_contact(
 account_id MEDIUMINT NOT NULL,
 contact_id INT NOT NULL,
+contact_name varchar(25) NOT NULL,
+alias varchar(25) NOT NULL,
+account_type varchar(30) NOT NULL,
+contact_groups varchar(45) NOT NULL,
 email varchar(25) NOT NULL,
 phone varchar(10),
 misc varchar(25),
-contact_groups varchar(45) NOT NULL,
 receive BOOLEAN NOT NULL,
 PRIMARY KEY (contact_id),
 FOREIGN KEY(account_id) REFERENCES account_information(account_id),
-FOREIGN KEY(email) REFERENCES account_information(email),
-UNIQUE (username)
 );
 
 CREATE TABLE nagios_contact_groups(
