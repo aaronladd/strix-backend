@@ -123,7 +123,7 @@ sub defaultContact {
 			print CONTACTFILE "$defaultFields[2] $dataPull->[0][7]\n";
 		} elsif($currentLine eq $defaultFields[3]){
 			print CONTACTFILE "$defaultFields[3] $dataPull->[0][3]\n";
-		} elsif($currentLine eq $contactFields[$count] && $count < $#contactFields+1){
+		} elsif($currentLine eq $contactFields[$count] && $count <= $#contactFields+1){
 			print CONTACTFILE ";$contactFields[$count]\n";
 			$count++;
 		} elsif($currentLine) {
