@@ -18,82 +18,36 @@ sub main {
 
 sub fileCreation{
 	my $newAcctPath=$_[0];
-	my $count=0;
-	my ($line, $newHostFile);
 	my @newDirectories=("contacts", "hosts");
-	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2",  "host_notifications_enabled", "service_notifications_enabled");
-	my @contactGroupFields=(";group_id", "contactgroup_name", "alias", "members");
-	my @hostFields=("use", "host_name", "alias", "display_name", "address", "contact_groups");
-	my @serviceFields=("use", "host_name", "service_description", "check_command");
+	#my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2",  "host_notifications_enabled", "service_notifications_enabled");
+	#my @contactGroupFields=(";group_id", "contactgroup_name", "alias", "members");
+	#my @hostFields=("use", "host_name", "alias", "display_name", "address", "contact_groups");
+	#my @serviceFields=("use", "host_name", "service_description", "check_command");
 
 	if(-e "$newAcctPath") {
-		die "Unable to create $newAcctPath";
+		die "Directory $newAcctPath already exists\n";
 	} else {
 		mkdir "$newAcctPath";
 	}
 		
-	while($count < 2) {
-		if (-e "$newAcctPath/$newDirectories[$count]") {
-			die "Unable to create $newAcctPath/$newDirectories[$count]\n"
+	foreach my $line (@newDirectories){
+		if (-e "$newAcctPath/$line") {
+			die "Directory $newAcctPath/$line  already exists.\n"
 		} else {
-			mkdir "$newAcctPath/$newDirectories[$count]";
+			mkdir "$newAcctPath/$line";
 		}
-		$count++;
 	}
 
-	if(open CONTACTFILE, '>', "$newAcctPath/contacts/contacts.cfg") {
-		print CONTACTFILE "define contact {\n";
+	open CONTACTFILE, '>', "$newAcctPath/contacts/contacts.cfg") || die "Unable to open $newAcctPath/contacts/contacts.cfg\n";
+	
+	open CONTACTGROUPFILE, '>',"$newAcctPath/contacts/contacts_group.cfg" || die "Unable to open $newAcctPath/contacts/contacts_group.cfg\n";
+	
+	open HOSTFILE, '>', "$newAcctPath/hosts/host$count.cfg" || die "Unable to open $newAcctPath/hosts/host$count.cfg";
+		
+	close HOSTFILE;
+	close CONTACTGROUPFILE;
+	close CONTACTFILE;
 
-		foreach $line (@contactFields){
-			print CONTACTFILE "$line\n";
-		}
-
-		print CONTACTFILE "}";
-		close CONTACTFILE;
-	} else {
-		die "Unable to open $newAcctPath/contacts/contacts.cfg\n";
-	}
-
-	if(open CONTACTGROUPFILE, '>',"$newAcctPath/contacts/contacts_group.cfg") {
-		print CONTACTGROUPFILE "define contactgroup {\n";
-
-		foreach $line (@contactGroupFields){
-			print CONTACTGROUPFILE "$line\n";
-		}
-
-		print CONTACTGROUPFILE "}";
-		close CONTACTGROUPFILE;
-	} else {
-		die "Unable to open $newAcctPath/contacts/contacts_group.cfg\n";
-	}
-	$count=1;
-	while ($count<5) {
-		if($count<2) {
-			$newHostFile="$newAcctPath/hosts/host$count.cfg";
-		} else {
-			$newHostFile="$newAcctPath/hosts/host$count.cfg_off";
-		}
-		if(open HOSTFILE, '>', "$newHostFile") {
-			print HOSTFILE "define host {\n";
-
-			foreach $line (@hostFields){
-				print HOSTFILE "$line\n";
-			}
-
-			print HOSTFILE "}\n\n";
-
-			print HOSTFILE "define service {\n";
-
-			foreach $line (@serviceFields){
-				print HOSTFILE "$line\n";
-			}
-
-			print HOSTFILE "}";
-			close HOSTFILE;
-		} else {
-			die "Unable to open $newHostFile";
-		}
-		$count++;
 	}
 }
 
