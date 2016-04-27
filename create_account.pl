@@ -25,9 +25,10 @@ sub fileCreation{
 	my @serviceFields=("use", "host_name", "service_description", "check_command");
 
 	if(-e "$newAcctPath") {
-		die "Unable to create $newAcctPath";
+		mkdir "$newAcctPath";	
 	} else {
-		mkdir "$newAcctPath";
+		die "Unable to create $newAcctPath";
+
 	}
 		
 	while($count < 2) {
@@ -130,13 +131,15 @@ sub dataBaseConnection {
 }
 
 sub dataBasePull {
-	my ($dbh, $accountId, $queryNum, $sth, $dump)=$_[0], $_[1], $_[2];
-	my @queryList;
+	my ($dbh, $accountId, $queryNum, $sth, $dump, $query)=$_[0], $_[1], $_[2];
 	
-	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
-	$queryList[1]="SELECT * FROM account_information WHERE account_id='$accountId'";
+	if($queryNum == 0){
+		$query="SELECT email FROM account_information WHERE account_id='$accountId'";
+	} elsif ($queryNum == 1){
+		$query="SELECT * FROM account_information WHERE account_id='$accountId'";
+	}
 	
-	$sth=$dbh->prepare($queryList[$queryNum]) || die "Prepare failed: $DBI::errstr\n";
+	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr\n";
 	
 	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
 	
