@@ -104,7 +104,7 @@ sub defaultContact {
 	my $currentLine;
 	my $contactFile="$newAcctPath/contacts/contacts.cfg";
 	my $contactBackupFile="$newAcctPath/contacts/contacts.bkp_cfg";
-	my @contactFields=(";contact_id 01", "contact_name", ";alias", "use", ";contactgroups", "email", ";address1", ";address2", "host_notifications_enabled 1", "service_notifications_enabled 1");
+	my @contactFields=(";contact_id 01", "contact_name", ";alias", "use", ";contactgroups", "email", ";address1", ";address2", "host_notifications_enabled 0", "service_notifications_enabled 0");
 	
 	$contactFields[1]="$contactFields[1] $dataPull->[0][1]";
 	$contactFields[3]="$contactFields[3] $dataPull->[0][3]";
@@ -115,7 +115,7 @@ sub defaultContact {
 	open CONTACTFILE, ">$contactFile" or die $!;
 	print CONTACTFILE "define contact{\n";
 	foreach my $line (@contactFields){
-		print CONTACTFILE "$line\n";
+		print CONTACTFILE "\t$line\n";
 	}
 	print CONTACTFILE "}\n";
 	close CONTACTFILE;
