@@ -97,26 +97,25 @@ sub fileCreation{
 }
 
 sub defaultContact {
-	my @newAccount=dataBasePull(dataBaseConnection(),$_[1],1);
-	my ($newAcctPath, $count)=$_[0],0;
+	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
+	my ($newAcctPath, $count, $currentLine)=$_[0],0;
 	my $contactFile="$newAcctPath/contacts/contacts.cfg";
 	my $contactBackupFile="$newAcctPath/contacts/contacts.bkp_cfg";
 	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
-	my $dataPull=dataBasePull(dataBaseConnection(),$accountId,1);
 	
-	rename $contactFile $contactBackupFile;
+	rename $contactFile, $contactBackupFile;
 	$dataPull->[0][1]=substr $dataPull->[0][1], -2, 2;
 	
-	open CONTACTFILE, ">$contactsGroupFile" or die $!;
-	open CONTACTBACKUP, "<", $contactsGroupBackup or die $!;
+	open CONTACTFILE, ">$contactFile" or die $!;
+	open CONTACTBACKUP, "<", $contactBackupFile or die $!;
 	
 	while(<CONTACTBACKUP>){
 		chomp();
 		$currentLine=$_;
 		if($currentLine eq $contactFields[$count]){
-			print CONTACTFILE "$contactFields[$count] $dataPull->[0][$count]\n"
+			print CONTACTFILE "$contactFields[$count] $dataPull->[0][$count]\n";
 			$count++;
-		} else if($currentLine) {
+		} elsif($currentLine) {
 			print CONTACTFILE "$currentLine\n"
 		}
 	}

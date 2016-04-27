@@ -35,7 +35,7 @@ sub editContact {
 	my @contactFields=("contact_name", "alias", "use", "contactgroups", "email", "address1", "address2", "contact_id");
 	my $datapull=dataBasePull(dataBaseConnection(),$accountId,1);
 	
-	rename $contactFile $contactBackup;	
+	rename $contactFile, $contactBackup;	
 	
 	open CONTACTFILE, ">$contactFile" or die $!;
 	open CONTACTBACKUP, "<", $contactBackup or die $!;
@@ -46,17 +46,17 @@ sub editContact {
 		
 		if($currentLine eq ";$contactFields[7] $dataPull->[$contactNumber][1]"){
 			$match=true;
-		} else if($match) {
+		} elsif($match) {
 			print CONTACTFILE "$contactFields[$count] $dataPull->[$contactNumber][$count+2]\n"
 			$count++;
 			if($count+1 == $#contactFields){
 				$match=false;
 				$contactNumber++;
 			}
-		} else if(eof(CONTACTBACKUP) && $#{$dataPull->[0]} > $contactNumber){
+		} elsif(eof(CONTACTBACKUP) && $#{$dataPull->[0]} > $contactNumber){
 			addContact($contactsFile, $contactsBackupFile, $contactNumber, $dataPull);
 			last;
-		} else if($currentLine){
+		} elsif($currentLine){
 			print CONTACTFILE "$currentLine\n";
 		}
 	}
