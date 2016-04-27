@@ -14,6 +14,19 @@ sub main {
 	
 	editContact($nagAcctPath, $accountId);
 }
+sub addContact {
+	my ($contactsFile, $contactsBackupFile, $contactNumber, $dataPull, $count)=$_[0], $_[1], $_[2], $_[3], 0;
+	open APPENDCONTACTFILE, ">>$contactFile" or die $!;
+	print APPENDCONTACTFILE "define contact{\n"
+	while($contactNumber <= $#{$dataPull->[0]}){
+		print APPENDCONTACTFILE "$contactFields[$count] $dataPull->[$contactNumber][$count+2]\n"
+		$count++;
+		if($count+1 == $#contactFields){
+			$contactNumber++;
+		}
+	}
+	print APPENDCONTACTFILE "}\n"
+}
 
 sub editContact {
 	my ($nagAcctPath, $accountId, $count, $match, $contactNumber, $currentLine)=$_[0], $_[1] 0, false, 0;
@@ -36,13 +49,13 @@ sub editContact {
 		} else if($match) {
 			print CONTACTFILE "$contactFields[$count] $dataPull->[$contactNumber][$count+2]\n"
 			$count++;
-			if($count == $#contactFields){
+			if($count+1 == $#contactFields){
 				$match=false;
 				$contactNumber++;
 			}
-		} else if(eof(CONTACTBACKUP)){
-			#separate out the new row to add to the end of the file. From the db pull.
-			addGroup($contactsGroupFile, @newGroup);
+		} else if(eof(CONTACTBACKUP) && $#{$dataPull->[0]} > $contactNumber){
+			addContact($contactsFile, $contactsBackupFile, $contactNumber, $dataPull);
+			last;
 		} else if($currentLine){
 			print CONTACTFILE "$currentLine\n";
 		}
