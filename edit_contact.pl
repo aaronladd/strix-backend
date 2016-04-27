@@ -8,7 +8,7 @@ use DBI;
 main(@ARGV);
 
 sub main {
-	my ($accountId)=$_[0];
+	my $accountId=$_[0];
 	my $email=dataBasePull(dataBaseConnection(),$accountId,0);
 	my $nagAcctPath="/usr/local/nagios/etc/accounts/$email->[0][0]";
 	

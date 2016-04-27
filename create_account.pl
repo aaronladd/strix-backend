@@ -5,26 +5,25 @@ use warnings;
 use POSIX;
 use DBI;
 
-main($ARGV[0]);
+main(@ARGV);
 
 sub main {
-	my $id=$_[0];
-	my @email=dataBasePull(dataBaseConnection(), $id, 1);
+	my $accountId=$_[0];
+	my $email=dataBasePull(dataBaseConnection(),$accountId,0);
+	my $newAcctPath="/usr/local/nagios/etc/accounts/$email->[0][0]";
 	
-	fileCreation($email[0]);
+	fileCreation($newAcctPath);
 	
-	defaultContact($id, $email[0]);
+	defaultContact($newAcctPath,$accountId);
 }
 
 sub fileCreation{
-	my $newAcctPath="/usr/local/nagios/etc/accounts/$_[0]";
+	my ($newAcctPath, $count, $line, $newHostFile)=$_[0], 0;
 	my @newDirectories=("contacts", "hosts");
-	my ($x, $line, $newHostFile, $FILE)=0;
-
-	my @contactFields=("contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
+	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
+	my @contactGroupFields=(";group_id", "contactgroup_name", "alias", "members");
 	my @hostFields=("use", "host_name", "alias", "display_name", "address", "contact_groups");
 	my @serviceFields=("use", "host_name", "service_description", "check_command");
-	my @contactGroupFields=("contactgroup_name", "alias", "members");
 
 	if(-e "$newAcctPath") {
 		die "Unable to create $newAcctPath";
@@ -32,125 +31,122 @@ sub fileCreation{
 		mkdir "$newAcctPath";
 	}
 		
-	while($x < 2) {
-		if (-e "$newAcctPath/$newDirectories[$x]") {
-			die "Unable to create $newAcctPath/$newDirectories[$x]\n"
+	while($count < 2) {
+		if (-e "$newAcctPath/$newDirectories[$count]") {
+			die "Unable to create $newAcctPath/$newDirectories[$count]\n"
 		} else {
-			mkdir "$newAcctPath/$newDirectories[$x]";
+			mkdir "$newAcctPath/$newDirectories[$count]";
 		}
-		$x++;
+		$count++;
 	}
 
-	if (open $FILE, '>', "$newAcctPath/contacts/contacts.cfg") {
-		print $FILE "define contact {\n";
+	if (open CONTACTFILE, '>', "$newAcctPath/contacts/contacts.cfg") {
+		print CONTACTFILE "define contact {\n";
 
 		foreach $line (@contactFields){
-			print $FILE "$line\n";
+			print CONTACTFILE "$line\n";
 		}
 
-		print $FILE "}";
-		close $FILE;
+		print CONTACTFILE "}";
+		close CONTACTFILE;
 	} else {
 		die "Unable to open $newAcctPath/contacts/contacts.cfg\n";
 	}
 
-	if(open $FILE, '>',"$newAcctPath/contacts/contacts_group.cfg") {
-		print $FILE "define contactgroup {\n";
+	if(open CONTACTGROUPFILE, '>',"$newAcctPath/contacts/contacts_group.cfg") {
+		print CONTACTGROUPFILE "define contactgroup {\n";
 
 		foreach $line (@contactGroupFields){
-			print $FILE "$line\n";
+			print CONTACTGROUPFILE "$line\n";
 		}
 
-		print $FILE "}";
-		close $FILE;
+		print CONTACTGROUPFILE "}";
+		close CONTACTGROUPFILE;
 	} else {
 		die "Unable to open $newAcctPath/contacts/contacts_group.cfg\n";
 	}
-	$x=1;
-	while ($x<5) {
-		if($x<2) {
-			$newHostFile="$newAcctPath/hosts/host$x.cfg";
+	$count=1;
+	while ($count<5) {
+		if($count<2) {
+			$newHostFile="$newAcctPath/hosts/host$count.cfg";
 		} else {
-			$newHostFile="$newAcctPath/hosts/host$x.cfg_off";
+			$newHostFile="$newAcctPath/hosts/host$count.cfg_off";
 		}
-		if(open $FILE, '>', "$newHostFile") {
-			print $FILE "define host {\n";
+		if(open HOSTFILE, '>', "$newHostFile") {
+			print HOSTFILE "define host {\n";
 
 			foreach $line (@hostFields){
-				print $FILE "$line\n";
+				print HOSTFILE "$line\n";
 			}
 
-			print $FILE "}\n\n";
+			print HOSTFILE "}\n\n";
 
-			print $FILE "define service {\n";
+			print HOSTFILE "define service {\n";
 
 			foreach $line (@serviceFields){
-				print $FILE "$line\n";
+				print HOSTFILE "$line\n";
 			}
 
-			print $FILE "}";
-			close $FILE;
+			print HOSTFILE "}";
+			close HOSTFILE;
 		} else {
 			die "Unable to open $newHostFile";
 		}
-		$x++;
+		$count++;
 	}
 }
 
 sub defaultContact {
-	my @newAccount=dataBasePull(dataBaseConnection(), $_[0], 2, $_[1]);
-	my $x=0;
-	my $contactFile="/usr/local/nagios/etc/accounts/$_[0]/contacts/contacts.cfg";
-	my $contactBackupFile="/usr/local/nagios/etc/accounts/$_[0]/contacts/contacts.bkp_cfg";
-	my @contactFields=("contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
+	my @newAccount=dataBasePull(dataBaseConnection(),$_[1],1);
+	my ($newAcctPath, $count)=$_[0],0;
+	my $contactFile="$newAcctPath/contacts/contacts.cfg";
+	my $contactBackupFile="$newAcctPath/contacts/contacts.bkp_cfg";
+	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2");
+	my $dataPull=dataBasePull(dataBaseConnection(),$accountId,1);
 	
 	rename $contactFile $contactBackupFile;
-
+	$dataPull->[0][1]=substr $dataPull->[0][1], -2, 2;
+	
 	open CONTACTFILE, ">$contactsGroupFile" or die $!;
 	open CONTACTBACKUP, "<", $contactsGroupBackup or die $!;
 	
 	while(<CONTACTBACKUP>){
 		chomp();
-
-		if($_ eq $_contactFields[$x]){
-			if ($newAccount[$x]){
-				print CONTACTFILE "$contactFields[$x] $newAccount[$x]\n";
-			} else {
-				print CONTACTFILE ";$contactFields[$x] $newAccount[$x]\n";
-			}
-			$x++;
-		} else {
-			print CONTACTFILE "$_\n"
+		$currentLine=$_;
+		if($currentLine eq $contactFields[$count]){
+			print CONTACTFILE "$contactFields[$count] $dataPull->[0][$count]\n"
+			$count++;
+		} else if($currentLine) {
+			print CONTACTFILE "$currentLine\n"
 		}
 	}
 }
 
 sub dataBaseConnection {
-	my $host='db.apathabove.net';
-	my $port='9800';
-	my $dsn='dbi:mysql:nagidb';
-	my $user='nagidb';
-	my $pass='hV22buZAVFk22fx';
+	my ($dbh, $accountId, $queryNum, $sth, $dump)=$_[0], $_[1], $_[2];
+	my @queryList;
 	
-	my $dbh=DBI->connect("dbi:Proxy:hostname=$host;port=$port;dsn=$dsn",$user,$pass) || die "Error opening database: $DBI::errstr\n";
-	return ($dbh);
+	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
+	$queryList[1]="SELECT * FROM account_information WHERE account_id='$accountId'";
+	
+	$sth=$dbh->prepare($queryList[$queryNum]) || die "Prepare failed: $DBI::errstr\n";
+	
+	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
+	
+	#$sth->dump_results();  
+	$dump=$sth->fetchall_arrayref;
+	$sth->finish();
+	$dbh->disconnect || die "Failed to disconnect\n";
+	return $dump;
 }
 
 sub dataBasePull {
-	my ($dbh, $id, $queryID, $account, $sth, $query) = $_[0], $_[1], $_[2], $_[3];
+	my $dsn='dbi:mysql:nagidb';
+	my $user='nagiTest';
+	my $pass='hV22buZAVFk22fx';
 	
-	if($queryID == 1) {
-		$query="SELECT account FROM table WHERE id='$id'";
-	} else {
-		$query="SELECT username, name, package, email FROM table3 WHERE id='$id' and email='$account'";
-	}
-	
-	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr\n";
-	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
-	my @dataPull=$sth->fetchrow();
-	$sth->finish();
-	$sth->disconnect || die "Failed to disconnect\n";
-	return (@dataPull);
+	my $dbh=DBI->connect($dsn,$user,$pass) || die "Error opening database: $DBI::errstr\n";
+	return ($dbh);
 }
 
 #--accounts
