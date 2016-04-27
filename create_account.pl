@@ -12,8 +12,7 @@ sub main {
 	my $email=dataBasePull(dataBaseConnection(),$accountId,0);
 	my $newAcctPath="/usr/local/nagios/etc/accounts/$email->[0][0]";
 	
-	fileCreation($newAcctPath);
-	
+	fileCreation($newAcctPath);	
 	defaultContact($newAcctPath,$accountId);
 }
 
@@ -122,6 +121,15 @@ sub defaultContact {
 }
 
 sub dataBaseConnection {
+	my $dsn='dbi:mysql:nagidb';
+	my $user='nagiTest';
+	my $pass='hV22buZAVFk22fx';
+	
+	my $dbh=DBI->connect($dsn,$user,$pass) || die "Error opening database: $DBI::errstr\n";
+	return ($dbh);
+}
+
+sub dataBasePull {
 	my ($dbh, $accountId, $queryNum, $sth, $dump)=$_[0], $_[1], $_[2];
 	my @queryList;
 	
@@ -137,15 +145,6 @@ sub dataBaseConnection {
 	$sth->finish();
 	$dbh->disconnect || die "Failed to disconnect\n";
 	return $dump;
-}
-
-sub dataBasePull {
-	my $dsn='dbi:mysql:nagidb';
-	my $user='nagiTest';
-	my $pass='hV22buZAVFk22fx';
-	
-	my $dbh=DBI->connect($dsn,$user,$pass) || die "Error opening database: $DBI::errstr\n";
-	return ($dbh);
 }
 
 #--accounts
