@@ -113,13 +113,15 @@ sub defaultContact {
 	rename $contactFile, $contactBackupFile;
 		
 	open CONTACTFILE, ">$contactFile" or die $!;
+	print CONTACTFILE "define contact{\n"
 	foreach my $line (@contactFields){
 		print CONTACTFILE "$line\n";
 	}
+	print CONTACTFILE "}\n";
 	close CONTACTFILE;
 }
 
-sub strixdbConnection {
+sub dataBaseConnection {
 	my $dsn='dbi:mysql:strixdb';
 	my $user='nagiTest';
 	my $pass='hV22buZAVFk22fx';
