@@ -32,8 +32,9 @@ FOREIGN KEY(account_id) REFERENCES account_information(account_id),
 CREATE TABLE nagios_contact_groups(
 account_id MEDIUMINT NOT NULL,
 group_id INT NOT NULL,
+contactgroup_name varchar(40) NOT NULL,
 alias varchar(25) NOT NULL,
-members varchar(10),
+members varchar(80),
 PRIMARY KEY (group_id),
 FOREIGN KEY(account_id) REFERENCES account_information(account_id)
 );
