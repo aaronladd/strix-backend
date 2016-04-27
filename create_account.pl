@@ -45,7 +45,6 @@ sub fileCreation{
 	close CONTACTFILE;
 	close CONTACTGROUPFILE;
 	close HOSTFILE;
-	}
 }
 
 sub defaultContact {
