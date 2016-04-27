@@ -38,9 +38,9 @@ sub fileCreation{
 		}
 	}
 
-	open CONTACTFILE, '>', "$newAcctPath/contacts/contacts.cfg") || die "Unable to open $newAcctPath/contacts/contacts.cfg\n";
+	open CONTACTFILE, '>', "$newAcctPath/contacts/contacts.cfg" || die "Unable to open $newAcctPath/contacts/contacts.cfg\n";
 	open CONTACTGROUPFILE, '>',"$newAcctPath/contacts/contacts_group.cfg" || die "Unable to open $newAcctPath/contacts/contacts_group.cfg\n";
-	open HOSTFILE, '>', "$newAcctPath/hosts/host$count.cfg" || die "Unable to open $newAcctPath/hosts/host$count.cfg";
+	open HOSTFILE, '>', "$newAcctPath/hosts/host1.cfg" || die "Unable to open $newAcctPath/hosts/host1.cfg";
 		
 	close CONTACTFILE;
 	close CONTACTGROUPFILE;
@@ -50,8 +50,6 @@ sub fileCreation{
 sub defaultContact {
 	my $newAcctPath=$_[0];
 	my $dataPull=$_[1];
-	my $count=0;
-	my $currentLine;
 	my $contactFile="$newAcctPath/contacts/contacts.cfg";
 	my $contactBackupFile="$newAcctPath/contacts/contacts.bkp_cfg";
 	my @contactFields=(";contact_id 01", "contact_name", ";alias", "use", ";contactgroups", "email", ";address1", ";address2", "host_notifications_enabled 0", "service_notifications_enabled 0");
