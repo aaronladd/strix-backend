@@ -113,7 +113,7 @@ sub defaultContact {
 	rename $contactFile, $contactBackupFile;
 		
 	open CONTACTFILE, ">$contactFile" or die $!;
-	print CONTACTFILE "define contact{\n"
+	print CONTACTFILE "define contact{\n";
 	foreach my $line (@contactFields){
 		print CONTACTFILE "$line\n";
 	}
