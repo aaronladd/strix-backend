@@ -29,18 +29,21 @@ sub editContact {
 	while(<CONTACTBACKUP>){
 		chomp();
 		$currentLine=$_;
-		$dataPull[$contactNumber][1]=substr $dataPull[$contactNumber][1], -2, 2;
+		$dataPull->[$contactNumber][1]=substr $dataPull->[$contactNumber][1], -2, 2;
 		
-		if($currentLine eq ";$contactFields[7] $dataPull[$contactNumber][1]"){
+		if($currentLine eq ";$contactFields[7] $dataPull->[$contactNumber][1]"){
 			$match=true;
 		} else if($match) {
-			print CONTACTFILE "$contactFields[$count] $dataPull[$contactNumber][$count+2]\n"
+			print CONTACTFILE "$contactFields[$count] $dataPull->[$contactNumber][$count+2]\n"
 			$count++;
 			if($count == $#contactFields){
 				$match=false;
 				$contactNumber++;
 			}
-		} else {
+		} else if(eof(CONTACTBACKUP)){
+			#separate out the new row to add to the end of the file. From the db pull.
+			addGroup($contactsGroupFile, @newGroup);
+		} else if($currentLine){
 			print CONTACTFILE "$currentLine\n";
 		}
 	}
