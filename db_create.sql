@@ -1,6 +1,7 @@
 CREATE DATABASE nagidb;
 CREATE DATABASE strixdb;
 CREATE DATABASE strixProducts;
+CREATE DATABASE nagiUpdates;
 
 use strixProducts;
 
@@ -148,6 +149,17 @@ contact_groups TINYTEXT,
 PRIMARY KEY (service_num),
 FOREIGN KEY(account_id) REFERENCES account_information(account_id),
 FOREIGN KEY(host_id) REFERENCES nagios_host(host_id)
+);
+
+use nagiUpdates;
+
+CREATE TABLE accounts_updated(
+account_id MEDIUMINT NOT NULL,
+contacts BOOLEAN NOT NULL,
+contacts_group BOOLEAN NOT NULL,
+hosts BOOLEAN NOT NULL,
+host_id INT,
+PRIMARY KEY (account_id)
 );
 
 CREATE USER 'nagiTest'@'localhost' IDENTIFIED BY 'hV22buZAVFk22fx';
