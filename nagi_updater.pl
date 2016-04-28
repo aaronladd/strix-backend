@@ -32,7 +32,6 @@ sub fileRebuild{
 	my $contact=$_->[0][2];
 	my $cgroup=$_->[0][3];
 	my $host=$_->[0][4];
-	my @hostId=split(',', $_->[0][5]);
 	
 	if ($contact == 1){
 		exec '\home\nagios\scripting\rebuild_contact.pl', $accountId;
@@ -43,7 +42,7 @@ sub fileRebuild{
 	}
 	
 	if ($host == 1){
-		exec '\home\nagios\scripting\rebuild_host.pl', $accountId, @hostId;
+		exec '\home\nagios\scripting\rebuild_host.pl', $accountId;
 	}
 	
 }
