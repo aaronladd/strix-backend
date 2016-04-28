@@ -2,64 +2,14 @@ CREATE DATABASE nagidb;
 CREATE DATABASE strixdb;
 CREATE DATABASE strixProducts;
 
-use nagidb;
+use strixProducts;
 
-CREATE TABLE account_information(
-account_id MEDIUMINT NOT NULL AUTO_INCREMENT,
-account_type varchar(30) NOT NULL,
-service BOOLEAN NOT NULL,
-create_date DATE NOT NULL,
-email varchar(25) NOT NULL,
-PRIMARY KEY (account_id),
-UNIQUE (email)
-);
-
-CREATE TABLE nagios_contact(
-account_id MEDIUMINT NOT NULL,
-contact_id INT NOT NULL,
-contact_name varchar(25) NOT NULL,
-alias varchar(25) NOT NULL,
-account_type varchar(30) NOT NULL,
-contact_groups varchar(45) NOT NULL,
-email varchar(25) NOT NULL,
-phone varchar(10),
-misc varchar(25),
-receive BOOLEAN NOT NULL,
-PRIMARY KEY (contact_id),
-FOREIGN KEY(account_id) REFERENCES account_information(account_id)
-);
-
-CREATE TABLE nagios_contact_groups(
-account_id MEDIUMINT NOT NULL,
-group_id INT NOT NULL,
-contactgroup_name varchar(40) NOT NULL,
-alias varchar(25) NOT NULL,
-members varchar(80),
-PRIMARY KEY (group_id),
-FOREIGN KEY(account_id) REFERENCES account_information(account_id)
-);
-
-CREATE TABLE nagios_host(
-account_id MEDIUMINT NOT NULL,
-host_id INT NOT NULL,
-host_name varchar(35) NOT NULL,
-alias varchar(25) NOT NULL,
-address varchar(45) NOT NULL,
-contact_groups TINYTEXT NOT NULL,
-PRIMARY KEY (host_id),
-FOREIGN KEY(account_id) REFERENCES account_information(account_id)
-);
-
-CREATE TABLE nagios_host_services(
-account_id MEDIUMINT NOT NULL,
-host_id INT NOT NULL,
-service_num SMALLINT NOT NULL,
-host_name varchar(35) NOT NULL,
-service_description TINYTEXT NOT NULL,
-check_command varchar(25),
-PRIMARY KEY (service_num),
-FOREIGN KEY(account_id) REFERENCES account_information(account_id),
-FOREIGN KEY(host_id) REFERENCES nagios_host(host_id)
+CREATE TABLE products(
+product_id TINYINT NOT NULL,
+product_name TINYTEXT NOT NULL,
+product_desc TEXT,
+cost DECIMAL(6,2) NOT NULL,
+PRIMARY KEY (product_id)
 );
 
 use strixdb;
@@ -135,14 +85,64 @@ product_desc TEXT,
 cost DECIMAL(6,2) NOT NULL,
 );
 
-use strixProducts;
+use nagidb;
 
-CREATE TABLE products(
-product_id TINYINT NOT NULL,
-product_name TINYTEXT NOT NULL,
-product_desc TEXT,
-cost DECIMAL(6,2) NOT NULL,
-PRIMARY KEY (product_id)
+CREATE TABLE account_information(
+account_id MEDIUMINT NOT NULL,
+account_type varchar(30) NOT NULL,
+service BOOLEAN NOT NULL,
+create_date DATE NOT NULL,
+email varchar(25) NOT NULL,
+PRIMARY KEY (account_id),
+UNIQUE (email)
+);
+
+CREATE TABLE nagios_contact(
+account_id MEDIUMINT NOT NULL,
+contact_id INT NOT NULL,
+contact_name varchar(25) NOT NULL,
+alias varchar(25) NOT NULL,
+account_type varchar(30) NOT NULL,
+contact_groups varchar(45) NOT NULL,
+email varchar(25) NOT NULL,
+phone varchar(10),
+misc varchar(25),
+receive BOOLEAN NOT NULL,
+PRIMARY KEY (contact_id),
+FOREIGN KEY(account_id) REFERENCES account_information(account_id)
+);
+
+CREATE TABLE nagios_contact_groups(
+account_id MEDIUMINT NOT NULL,
+group_id INT NOT NULL,
+contactgroup_name varchar(40) NOT NULL,
+alias varchar(25) NOT NULL,
+members varchar(80),
+PRIMARY KEY (group_id),
+FOREIGN KEY(account_id) REFERENCES account_information(account_id)
+);
+
+CREATE TABLE nagios_host(
+account_id MEDIUMINT NOT NULL,
+host_id INT NOT NULL,
+host_name varchar(35) NOT NULL,
+alias varchar(25) NOT NULL,
+address varchar(45) NOT NULL,
+contact_groups TINYTEXT NOT NULL,
+PRIMARY KEY (host_id),
+FOREIGN KEY(account_id) REFERENCES account_information(account_id)
+);
+
+CREATE TABLE nagios_host_services(
+account_id MEDIUMINT NOT NULL,
+host_id INT NOT NULL,
+service_num SMALLINT NOT NULL,
+host_name varchar(35) NOT NULL,
+service_description TINYTEXT NOT NULL,
+check_command varchar(25),
+PRIMARY KEY (service_num),
+FOREIGN KEY(account_id) REFERENCES account_information(account_id),
+FOREIGN KEY(host_id) REFERENCES nagios_host(host_id)
 );
 
 CREATE USER 'nagiTest'@'localhost' IDENTIFIED BY 'hV22buZAVFk22fx';
