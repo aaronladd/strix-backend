@@ -125,21 +125,21 @@ account_id, first_name, last_name, account_type, service, create_date, email, ph
 );
 
 INSERT INTO billing_information(
-account_id, billing_id, first_name, last_name, email, phone, address_one, city, state, zip, country, pref_payment_type, paypal
+account_id, billing_id, first_name, last_name, email, address_one, city, state, zip, country, pref_payment_type, paypal
 ) VALUES (
-'1', '101', 'Lucille', 'Fuhrman', 'lucillecfuhrman@inbound.plus', '1112223333', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States', '1', '1'
+'1', '101', 'Lucille', 'Fuhrman', 'lucillecfuhrman@inbound.plus', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States', '1', '1'
 );
 
 INSERT INTO billing_information(
-account_id, billing_id, first_name, last_name, email, phone, address_one, city, state, zip, country, pref_payment_type, paypal, cc_num, cc_exp, cc_sec_code
+account_id, billing_id, first_name, last_name, email, address_one, city, state, zip, country, pref_payment_type, paypal, cc_num, cc_exp, cc_sec_code
 ) VALUES (
-'1', '102', 'Lucille', 'Fuhrman', 'lucillecfuhrman@inbound.plus', '1112223333', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States', '1', '0', '4485886586914093', '5/2020', '578'
+'1', '102', 'Lucille', 'Fuhrman', 'lucillecfuhrman@inbound.plus', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States', '1', '0', '4485886586914093', '5/2020', '578'
 );
 
 INSERT INTO billing_information(
-account_id, billing_id, first_name, last_name, email, phone, address_one, address_two, city, state, zip, country, pref_payment_type, paypal, cc_num, cc_exp, cc_sec_code
+account_id, billing_id, first_name, last_name, email, address_one, address_two, city, state, zip, country, pref_payment_type, paypal, cc_num, cc_exp, cc_sec_code
 ) VALUES (
-'2', '201','John', 'Minor', 'johnmminor@inbound.plus', '8174574831', '4026 Waldeck Street', 'Apt 2A', 'Fort Worth', 'TX', '76112', 'United States', '1', '0', '5445197118256029', '6/2018', '402'
+'2', '201','John', 'Minor', 'johnmminor@inbound.plus', '4026 Waldeck Street', 'Apt 2A', 'Fort Worth', 'TX', '76112', 'United States', '1', '0', '5445197118256029', '6/2018', '402'
 );
 
 INSERT INTO login(
