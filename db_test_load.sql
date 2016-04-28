@@ -7,7 +7,7 @@ account_id, account_type, service, create_date, email
 );
 
 INSERT INTO account_information(
-account_type, service, create_date, email
+account_id, account_type, service, create_date, email
 ) VALUES (
 '2', 'web_glance_gaze', '1', 'CURDATE()', 'johnmminor@inbound.plus'
 );
