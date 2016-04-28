@@ -14,18 +14,19 @@ sub main {
 	my $email=dataBasePull(dataBaseConnection(),$accountId,0);
 	my $nagAcctPath="/usr/local/nagios/etc/accounts/$email->[0][0]";
 	
-	rebuildHost($nagAcctPath, $accountId);
+	rebuildAllHosts($nagAcctPath, $accountId);
 }
 
-sub rebuildHost {
-	my ($nagAcctPath, $count, $hostId, $hostFile);
+sub rebuildAllHosts {
+	my ($nagAcctPath, $count, $hostId, $hostFile, $services);
 	$nagAcctPath=$_[0];
 	$count=0;
 	$hostId=0;
-	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
+	my $hosts=dataBasePull(dataBaseConnection(),$_[1],1);
 	my $hostDir="$nagAcctPath/hosts";
 	my $hostDirBackup="$nagAcctPath/hosts_bkp";
 	my @hostFields=("host_name", "alias", "address", "account_type", "contacts", "contact_groups");
+	my @serviceFields=("host_name", "service_description", "check_command", "use", "contacts", "contact_groups");
 	my @newFields=();
 
 	rename $hostDir, $hostDirBackup;
@@ -38,8 +39,8 @@ sub rebuildHost {
 		open HOSTFILE, '>', "$hostFile" or die $!;
 
 		for $count (0 .. $#hostFields){
-			if($dataPull->[$hostId][$count+1] ne "NULL"){
-				push @newFields, "$hostFields[$count] $dataPull->[$hostId][$count+2]";
+			if($hosts->[$hostId][$count+1] ne "NULL"){
+				push @newFields, "$hostFields[$count] $hosts->[$hostId][$count+2]";
 			} else {
 				push @newFields, ";$hostFields[$count]";
 			}
@@ -51,6 +52,30 @@ sub rebuildHost {
 			print HOSTFILE "\t$line\n";
 		}
 		print HOSTFILE "}";
+		
+		@newFields=();
+		$count=0;
+		
+		$services=dataBasePull(dataBaseConnection(),$_[1],2,$hostId+1);
+		
+		while $serviceNum < $#{$services->[0]}){
+			for $count (0 .. $#serviceFields){
+				if($services->[$hostId][$count+3] ne "NULL"){
+					push @newFields, "$hostFields[$count] $services->[$hostId][$count+2]";
+				} else {
+					push @newFields, ";$hostFields[$count]";
+				}
+				$count++;
+			}
+		
+		
+			print HOSTFILE "define service {\n";
+			foreach my $line (@newFields){
+				print HOSTFILE "\t$line\n";
+			}
+			print HOSTFILE "}";
+		
+		}
 		
 		@newFields=();
 		$count=0;
@@ -66,9 +91,11 @@ sub dataBasePull {
 	$dbh=$_[0];
 	$accountId=$_[1];
 	$queryNum=$_[2];
+	$hostId=$_[3];
 	
 	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
 	$queryList[1]="SELECT * FROM nagios_host WHERE account_id='$accountId'";
+	$queryList[2]="SELECT * FROM nagios_host_services WHERE account_id='$accountId' AND host_id='0$hostId'";
 	
 	$sth=$dbh->prepare($queryList[$queryNum]) || die "Prepare failed: $DBI::errstr\n";
 	
