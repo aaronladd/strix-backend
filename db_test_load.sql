@@ -192,7 +192,7 @@ account_id, change_type, contacts, contacts_group, hosts
 '1', 'E', '1', '0', '0'
 );
 
-INSERT INTO nagiUpdates(
+INSERT INTO accounts_updated(
 account_id, change_type, contacts, contacts_group, hosts
 ) VALUES (
 '2', 'C', '1', '1', '1'
