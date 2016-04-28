@@ -155,11 +155,11 @@ use nagiUpdates;
 
 CREATE TABLE accounts_updated(
 account_id MEDIUMINT NOT NULL,
-change_type varchar(20) NOT NULL,
+change_type CHAR(1) NOT NULL,
 contacts BOOLEAN NOT NULL,
 contacts_group BOOLEAN NOT NULL,
 hosts BOOLEAN NOT NULL,
-host_id INT,
+host_id varchar(30),
 PRIMARY KEY (account_id)
 );
 
