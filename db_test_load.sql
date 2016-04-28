@@ -1,57 +1,93 @@
 use nagidb;
 
 INSERT INTO account_information(
-account_type, service, create_date, email
+account_id, account_type, service, create_date, email
 ) VALUES (
-'web_glance_gander', '1', 'DATE()', 'lucillecfuhrman@inbound.plus'
+'1', 'web_glance_gander', '1', 'CURDATE()', 'lucillecfuhrman@inbound.plus'
 );
 
 INSERT INTO account_information(
 account_type, service, create_date, email
 ) VALUES (
-'web_glance_gaze', '1', 'DATE()', 'johnmminor@inbound.plus'
+'2', 'web_glance_gaze', '1', 'CURDATE()', 'johnmminor@inbound.plus'
 );
 
 INSERT INTO nagios_contact(
-account_id, contact_id, email, phone, contact_group, receive
+account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, receive
 ) VALUES (
-'1', '101', 'lucillecfuhrman@inbound.plus', 1112223333, 'group_alpha', '1'
+'1', '101', '101_lucille', 'lucille', 'web_glance_gander', '101_group_alpha', 'lucillecfuhrman@inbound.plus', 1112223333, 'group_alpha', '1'
 );
 
 INSERT INTO nagios_contact(
-account_id, contact_id, email, phone, contact_group, receive
+account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, misc, receive
 ) VALUES (
-'1', '102', 'lucillecfuhrman@inbound.plus', 1113334444, 'group_alpha', '1'
+'1', '102', '102_kevin', 'kevin', 'web_glance_gander', '102_group_beta', 'spacey.space@inbound.plus', 1113334444, 'lucillecfuhrman@inbound.plus', '1'
 );
 
 INSERT INTO nagios_contact(
-account_id, contact_id, email, phone, contact_group, receive
+account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, misc, receive
 ) VALUES (
-'2', '201','johnmminor@inbound.plus', 3334445555, 'group_alpha', '1'
+'2', '201', '201_john', 'john', 'web_glance_gaze', '201_group_beta', 'johnmminor@inbound.plus', 3334445555, 6667778888, '1'
+);
+
+INSERT INTO nagios_contact_groups(
+account_id, group_id, contactgroup_name, alias, members
+) VALUES (
+'1', '101', '101_group_alpha', 'group_alpha', 'lucille'
+);
+
+INSERT INTO nagios_contact_groups(
+account_id, group_id, contactgroup_name, alias, members
+) VALUES (
+'1', '102', '102_group_beta', 'group_beta', 'kevin'
+);
+
+INSERT INTO nagios_contact_groups(
+account_id, group_id, contactgroup_name, alias, members
+) VALUES (
+'2', '201', '201_group_beta', 'group_beta', 'john'
 );
 
 INSERT INTO nagios_host(
-account_id, host_id, host_name, alias, address, contact_groups
+account_id, host_id, host_name, alias, account_type, address, contact_groups
 ) VALUES (
-'1', '101', 'host.localhost.net', 'junkHost for Testing', '123.123.123.123', 'group_alpha'
+'1', '101', 'host.localhost.net', 'junkHost for Testing', 'web_glance_gander', '123.123.123.123', '101_group_alpha, 102_group_beta'
 );
 
 INSERT INTO nagios_host(
-account_id, host_id, host_name, alias, address, contact_groups
+account_id, host_id, host_name, alias, account_type, address, contacts
 ) VALUES (
-'2', '201', 'host.localhost.net', 'junk_Host for Testing', '127.0.0.1', 'group_beta'
+'1', '102', 'host2.localhost.net', 'junkHost2 for Testing', 'web_glance_gander', '111.222.333.444', '101_lucille'
+);
+
+INSERT INTO nagios_host(
+account_id, host_id, host_name, alias, account_type, address, contact_groups
+) VALUES (
+'2', '201', 'john.localhost.net', 'johns_Host for Testing', 'web_glance_gaze', '127.0.0.1', '201_group_beta'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts, contact_groups
+) VALUES (
+'1', '101', '10101', 'host.localhost.net', 'stupid_desc_here', 'check_ping'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts, contact_groups
+) VALUES (
+'1', '101', '10102', 'host.localhost.net', 'stupid_desc_here', 'check_pop'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts, contact_groups
+) VALUES (
+'1', '102', '10202', 'host2.localhost.net', 'stupid_desc_here', 'check_ping'
 );
 
 INSERT INTO nagios_host_services(
 account_id, host_id, service_num, host_name, service_description, check_command
 ) VALUES (
-'1', '101', 1, 'host.localhost.net', 'stupid_desc_here', 'check_ping'
-);
-
-INSERT INTO nagios_host_services(
-account_id, host_id, service_num, host_name, service_description, check_command
-) VALUES (
-'2', '201', 1, 'host.localhost.net', 'stupid_desc here', 'check_pop'
+'2', '201', '20101', 'john.localhost.net', 'stupid_desc here', 'check_pop'
 );
 
 use strixProducts;
@@ -79,13 +115,13 @@ use strixdb;
 INSERT INTO account_information(
 account_id, first_name, last_name, account_type, service, create_date, email, phone, address_one, city, state, zip, country
 ) VALUES (
-'1', 'lucille', 'fuhrman', 'web_glance_gander', 1, 'DATE()', 'lucillecfuhrman@inbound.plus', '1112223333', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States'
+'1', 'lucille', 'fuhrman', 'web_glance_gander', 1, 'CURDATE()', 'lucillecfuhrman@inbound.plus', '1112223333', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States'
 );
 
 INSERT INTO account_information(
 account_id, first_name, last_name, account_type, service, create_date, email, phone, address_one, address_two, city, state, zip, country
 ) VALUES (
-'2', 'john', 'minor', 'web_glance_gaze', '1', 'DATE()', 'johnmminor@inbound.plus', '8174574831', '4026 Waldeck Street', 'Apt 2A', 'Fort Worth', 'TX', '76112', 'United States'
+'2', 'john', 'minor', 'web_glance_gaze', '1', 'CURDATE()', 'johnmminor@inbound.plus', '8174574831', '4026 Waldeck Street', 'Apt 2A', 'Fort Worth', 'TX', '76112', 'United States'
 );
 
 INSERT INTO billing_information(
