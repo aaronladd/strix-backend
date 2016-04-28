@@ -159,7 +159,6 @@ change_type CHAR(1) NOT NULL,
 contacts BOOLEAN NOT NULL,
 contacts_group BOOLEAN NOT NULL,
 hosts BOOLEAN NOT NULL,
-host_id varchar(30),
 PRIMARY KEY (account_id)
 );
 
