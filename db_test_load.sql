@@ -51,7 +51,7 @@ account_id, group_id, contactgroup_name, alias, members
 INSERT INTO nagios_host(
 account_id, host_id, host_name, alias, account_type, address, contact_groups
 ) VALUES (
-'1', '101', 'host.localhost.net', 'junkHost for Testing', 'web_glance_gander', '123.123.123.123', '101_group_alpha, 102_group_beta'
+'1', '101', 'host.localhost.net', 'junkHost for Testing', 'web_glance_gander', '123.123.123.123', '101_group_alpha\, 102_group_beta'
 );
 
 INSERT INTO nagios_host(
