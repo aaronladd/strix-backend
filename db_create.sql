@@ -62,7 +62,6 @@ password varchar(35) NOT NULL,
 email varchar(25) NOT NULL,
 PRIMARY KEY(email),
 FOREIGN KEY(account_id) REFERENCES account_information(account_id),
-FOREIGN KEY(email) REFERENCES account_information(email) ON UPDATE CASCADE,
 UNIQUE (username)
 );
 
