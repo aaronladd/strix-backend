@@ -155,6 +155,7 @@ use nagiUpdates;
 
 CREATE TABLE accounts_updated(
 account_id MEDIUMINT NOT NULL,
+change_type varchar(20) NOT NULL,
 contacts BOOLEAN NOT NULL,
 contacts_group BOOLEAN NOT NULL,
 hosts BOOLEAN NOT NULL,
