@@ -15,7 +15,7 @@ account_id, account_type, service, create_date, email
 INSERT INTO nagios_contact(
 account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, receive
 ) VALUES (
-'1', '101', '101_lucille', 'lucille', 'web_glance_gander', '101_group_alpha', 'lucillecfuhrman@inbound.plus', 1112223333, 'group_alpha', '1'
+'1', '101', '101_lucille', 'lucille', 'web_glance_gander', '101_group_alpha', 'lucillecfuhrman@inbound.plus', 1112223333, '1'
 );
 
 INSERT INTO nagios_contact(
