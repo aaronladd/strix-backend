@@ -67,7 +67,7 @@ UNIQUE (username)
 
 CREATE TABLE invoices(
 account_id MEDIUMINT NOT NULL,
-invoice_num MEDIUMINT NOT NULL,
+invoice_num MEDIUMINT NOT NULL AUTO_INCREMENT,
 invoice_status varchar(10) NOT NULL,
 creation_date DATE NOT NULL,
 due_date DATE NOT NULL,
