@@ -19,10 +19,6 @@ sub main {
 sub fileCreation{
 	my $newAcctPath=$_[0];
 	my @newDirectories=("contacts", "hosts");
-	#my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2",  "host_notifications_enabled", "service_notifications_enabled");
-	#my @contactGroupFields=(";group_id", "contactgroup_name", "alias", "members");
-	#my @hostFields=("use", "host_name", "alias", "display_name", "address", "contact_groups");
-	#my @serviceFields=("use", "host_name", "service_description", "check_command");
 
 	if(-e "$newAcctPath") {
 		die "Directory $newAcctPath already exists\n";
