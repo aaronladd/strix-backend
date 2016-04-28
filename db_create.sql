@@ -82,7 +82,7 @@ invoice_num MEDIUMINT NOT NULL,
 line_num TINYINT NOT NULL,
 product_id MEDIUMINT NOT NULL,
 product_desc TEXT,
-cost DECIMAL(6,2) NOT NULL,
+cost DECIMAL(6,2) NOT NULL
 );
 
 use nagidb;
