@@ -183,3 +183,17 @@ account_id, invoice_num, line_num, product_id, cost
 ) VALUES (
 '2', '2', '2', '553163', '300.00'
 );
+
+use nagiUpdates;
+
+INSERT INTO nagiUpdates(
+account_id, change_type, contacts, contacts_group, hosts
+) VALUES (
+'1', 'E', '1', '0', '0'
+);
+
+INSERT INTO nagiUpdates(
+account_id, change_type, contacts, contacts_group, hosts
+) VALUES (
+'2', 'C', '1', '1', '1'
+);
