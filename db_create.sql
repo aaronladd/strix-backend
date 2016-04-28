@@ -5,7 +5,7 @@ CREATE DATABASE strixProducts;
 use strixProducts;
 
 CREATE TABLE products(
-product_id TINYINT NOT NULL,
+product_id INT NOT NULL,
 product_name TINYTEXT NOT NULL,
 product_desc TEXT,
 cost DECIMAL(6,2) NOT NULL,
