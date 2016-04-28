@@ -186,7 +186,7 @@ account_id, invoice_num, line_num, product_id, cost
 
 use nagiUpdates;
 
-INSERT INTO nagiUpdates(
+INSERT INTO accounts_updated(
 account_id, change_type, contacts, contacts_group, hosts
 ) VALUES (
 '1', 'E', '1', '0', '0'
