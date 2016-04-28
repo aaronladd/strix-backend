@@ -67,27 +67,27 @@ account_id, host_id, host_name, alias, account_type, address, contact_groups
 );
 
 INSERT INTO nagios_host_services(
-account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts, contact_groups
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts
 ) VALUES (
-'1', '101', '10101', 'host.localhost.net', 'stupid_desc_here', 'check_ping'
+'1', '101', '10101', 'host.localhost.net', 'stupid_desc_here', 'check_ping', 'web_glance_gander', '101_lucille'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contact_groups
+) VALUES (
+'1', '101', '10102', 'host.localhost.net', 'stupid_desc_here', 'check_pop', 'web_glance_gander', '101_group_alpha'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contact_groups
+) VALUES (
+'1', '102', '10202', 'host2.localhost.net', 'stupid_desc_here', 'check_ping', 'web_glance_gaze', '201_group_beta'
 );
 
 INSERT INTO nagios_host_services(
 account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts, contact_groups
 ) VALUES (
-'1', '101', '10102', 'host.localhost.net', 'stupid_desc_here', 'check_pop'
-);
-
-INSERT INTO nagios_host_services(
-account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts, contact_groups
-) VALUES (
-'1', '102', '10202', 'host2.localhost.net', 'stupid_desc_here', 'check_ping'
-);
-
-INSERT INTO nagios_host_services(
-account_id, host_id, service_num, host_name, service_description, check_command
-) VALUES (
-'2', '201', '20101', 'john.localhost.net', 'stupid_desc here', 'check_pop'
+'2', '201', '20101', 'john.localhost.net', 'stupid_desc here', 'check_pop', 'web_glance_gaze', '201_john', '201_group_beta'
 );
 
 use strixProducts;
