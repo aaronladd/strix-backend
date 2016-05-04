@@ -19,7 +19,7 @@ sub rebuildContactsGroup {
 	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
 	my ($nagAcctPath, $count, $groupId);
 	$nagAcctPath=$_[0];
-	$groupId=0;
+	$groupId=-1;
 	my $contactsGroupFile="$nagAcctPath/contacts/contacts_group.cfg";
 	my $contactsGroupBackup="$nagAcctPath/contacts/contacts_group.bkp_cfg";
 	my @contactGroupFields=("contactgroup_name", "alias", "members");
@@ -41,7 +41,7 @@ sub rebuildContactsGroup {
 		foreach my $line (@newFields){
 			print CONTACTGROUPFILE "\t$line\n";
 		}
-		print CONTACTGROUPFILE "}";
+		print CONTACTGROUPFILE "}\n";
 		
 		@newFields=();
 		$count=0;
