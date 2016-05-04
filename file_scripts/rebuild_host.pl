@@ -76,7 +76,7 @@ sub rebuildAllHosts {
 				print HOSTFILE "\t$line\n";
 			}
 			print HOSTFILE "}\n";
-		
+			$serviceNum++;		
 		}
 		
 		@newFields=();
@@ -86,16 +86,19 @@ sub rebuildAllHosts {
 }
 
 sub dataBasePull {
-	my ($dbh, $accountId, $queryNum, $sth, $dump, $hostId);
+	my ($dbh, $accountId, $queryNum, $sth, $dump);
 	my @queryList;
 	$dbh=$_[0];
 	$accountId=$_[1];
 	$queryNum=$_[2];
-	$hostId=$_[3];
 	
 	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
 	$queryList[1]="SELECT * FROM nagios_host WHERE account_id='$accountId'";
-	$queryList[2]="SELECT * FROM nagios_host_services WHERE account_id='$accountId' AND host_id='$hostId'";
+	#$queryList[2]="SELECT * FROM nagios_host_services WHERE account_id='$accountId' AND host_id='$hostId'";
+	if($_[3]){
+		$queryList[2]="SELECT * FROM nagios_host_services WHERE account_id='$accountId' AND host_id='$_[3]'";
+	}
+	
 	
 	$sth=$dbh->prepare($queryList[$queryNum]) || die "Prepare failed: $DBI::errstr\n";
 	
