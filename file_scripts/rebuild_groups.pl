@@ -12,12 +12,12 @@ sub main {
 	my $email=dataBasePull(dataBaseConnection(),$accountId,0);
 	my $nagAcctPath="/usr/local/nagios/etc/accounts/$email->[0][0]";
 	
-	editContactsGroup($nagAcctPath, $accountId);
+	rebuildContactsGroup($nagAcctPath, $accountId);
 }
 
-sub editContactsGroup {
-	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],2);
-	my ($nagAcctPath, $count, $contactId);
+sub rebuildContactsGroup {
+	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
+	my ($nagAcctPath, $count, $groupId);
 	$nagAcctPath=$_[0];
 	$groupId=0;
 	my $contactsGroupFile="$nagAcctPath/contacts/contacts_group.cfg";
@@ -25,13 +25,11 @@ sub editContactsGroup {
 	my @contactGroupFields=("contactgroup_name", "alias", "members");
 	my @newFields=();
 	
-	
 	rename $contactsGroupFile, $contactsGroupBackup;
 
 	open CONTACTGROUPFILE, '>', "$contactsGroupFile" or die $!;
 
 	while($groupId < $#{$dataPull}){
-		$dataPull->[$groupId][$count]=substr $dataPull->[$groupId][$count], -2, 2;
 		
 		for $count (2 .. $#{$dataPull->[0]}){
 			if($dataPull->[$contactId][$count]){
@@ -55,7 +53,10 @@ sub editContactsGroup {
 
 
 sub dataBasePull {
-	my ($dbh, $accountId, $queryNum, $sth, $dump)=$_[0], $_[1] $_[2];
+	my ($dbh, $accountId, $queryNum, $sth, $queryNum, $dump);
+	$dbh=$_[0];
+	$accountId=$_[1];
+	$queryNum=$_[2];
 	my @queryList;
 	
 	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
