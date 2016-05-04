@@ -19,7 +19,6 @@ sub editContactsGroup {
 	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],2);
 	my ($nagAcctPath, $count, $contactId);
 	$nagAcctPath=$_[0];
-	$count=0;
 	$groupId=0;
 	my $contactsGroupFile="$nagAcctPath/contacts/contacts_group.cfg";
 	my $contactsGroupBackup="$nagAcctPath/contacts/contacts_group.bkp_cfg";
@@ -31,11 +30,13 @@ sub editContactsGroup {
 
 	open CONTACTGROUPFILE, '>', "$contactsGroupFile" or die $!;
 
-	while($groupId < $#{$dataPull->[0]}){
+	while($groupId < $#{$dataPull}){
 		$dataPull->[$groupId][$count]=substr $dataPull->[$groupId][$count], -2, 2;
-		for $count (0 .. $#{$dataPull->[0]}-3){
-			push @newFields, "$contactGroupFields[$count] $dataPull->[$contactId][$count+1]";
-			$count++;
+		
+		for $count (2 .. $#{$dataPull->[0]}){
+			if($dataPull->[$contactId][$count]){
+				push @newFields, "$contactGroupFields[$count-2] $dataPull->[$contactId][$count]";
+			}
 		}
 		
 		print CONTACTGROUPFILE "define contactgroup {\n";
