@@ -61,10 +61,11 @@ sub rebuildAllHosts {
 		$services=dataBasePull(dataBaseConnection(),$_[1],2,$hosts->[$hostId][1]);
 		
 		while ($serviceNum < $#{$services}){
+			$serviceNum++;
 		
 			for $count (3 .. $#{$services->[0]}){
-				if($services->[$hostId][$count]){
-					push @newFields, "$serviceFields[$count-3] $services->[$hostId][$count]";
+				if($services->[$serviceNum][$count]){
+					push @newFields, "$serviceFields[$count-3] $services->[$serviceNum][$count]";
 				} else {
 					push @newFields, ";$serviceFields[$count-3]";
 				}
@@ -75,8 +76,8 @@ sub rebuildAllHosts {
 			foreach my $line (@newFields){
 				print HOSTFILE "\t$line\n";
 			}
-			print HOSTFILE "}\n";
-			$serviceNum++;		
+			print HOSTFILE "}\n";	
+			@newFields=();
 		}
 		
 		@newFields=();
