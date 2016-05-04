@@ -32,8 +32,8 @@ sub rebuildContactsGroup {
 	while($groupId < $#{$dataPull}){
 		
 		for $count (2 .. $#{$dataPull->[0]}){
-			if($dataPull->[$contactId][$count]){
-				push @newFields, "$contactGroupFields[$count-2] $dataPull->[$contactId][$count]";
+			if($dataPull->[$groupId][$count]){
+				push @newFields, "$contactGroupFields[$count-2] $dataPull->[$groupId][$count]";
 			}
 		}
 		
@@ -45,7 +45,7 @@ sub rebuildContactsGroup {
 		
 		@newFields=();
 		$count=0;
-		$contactId++;
+		$groupId++;
 	}
 	
 	close CONTACTGROUPFILE;
@@ -53,7 +53,7 @@ sub rebuildContactsGroup {
 
 
 sub dataBasePull {
-	my ($dbh, $accountId, $queryNum, $sth, $queryNum, $dump);
+	my ($dbh, $accountId, $queryNum, $sth, $dump);
 	$dbh=$_[0];
 	$accountId=$_[1];
 	$queryNum=$_[2];
