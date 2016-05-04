@@ -27,7 +27,7 @@ sub rebuildAllHosts {
 	my $hosts=dataBasePull(dataBaseConnection(),$accountId,1);
 	my $hostDir="$nagAcctPath/hosts";
 	my $hostDirBackup="$nagAcctPath/hosts_bkp";
-	my @hostFields=("host_name", "alias", "address", "account_type", "contacts", "contact_groups");
+	my @hostFields=("host_name", "alias", "address", "use", "contacts", "contact_groups");
 	my @serviceFields=("host_name", "service_description", "check_command", "use", "contacts", "contact_groups");
 	my @newFields=();
 
@@ -64,9 +64,9 @@ sub rebuildAllHosts {
 		
 			for $count (3 .. $#{$services->[0]}){
 				if($services->[$hostId][$count]){
-					push @newFields, "$hostFields[$count-3] $services->[$hostId][$count]";
+					push @newFields, "$serviceFields[$count-3] $services->[$hostId][$count]";
 				} else {
-					push @newFields, ";$hostFields[$count-3]";
+					push @newFields, ";$serviceFields[$count-3]";
 				}
 			}
 		
