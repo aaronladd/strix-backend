@@ -25,25 +25,25 @@ sub rebuildContact {
 	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
 	my $contactFile="$nagAcctPath/contacts/contacts.cfg";
 	my $contactBackup="$nagAcctPath/contacts/contacts.bkp_cfg";
-	my @contactFields=(";contact_id", "contact_name", "alias", "use", "contactgroups", "email", "address1", "address2", "host_notifications_enabled", "service_notifications_enabled");
+	my @contactFields=("contact_name", "alias", "use", "contactgroups", "email", "address1", "address2", "host_notifications_enabled", "service_notifications_enabled");
 	my @newFields=();
 
 	rename $contactFile, $contactBackup;
-
+	print "$contactFile\n";
 	open CONTACTFILE, '>', "$contactFile" or die $!;
-
-	while($contactId < $#{$dataPull->[0]}){
+	
+	while($contactId < $#{$dataPull}){
 		$dataPull->[$contactId][$count]=substr $dataPull->[$contactId][$count], -2, 2;
-		for $count (0 .. $#contactFields-2){
-			if($dataPull->[$contactId][$count+1] ne "null"){
-				push @newFields, "$contactFields[$count] $dataPull->[$contactId][$count+1]";
+		for $count (0 .. $#{$dataPull->[0]}-3){
+			if($dataPull->[$contactId][$count+2]){
+				push @newFields, "$contactFields[$count] $dataPull->[$contactId][$count+2]";
 			} else {
 				push @newFields, ";$contactFields[$count]";
 			}
 			$count++;
 		}
+		push @newFields, "$contactFields[7] $dataPull->[$contactId][9]";
 		push @newFields, "$contactFields[8] $dataPull->[$contactId][9]";
-		push @newFields, "$contactFields[9] $dataPull->[$contactId][9]";
 		
 		print CONTACTFILE "define contact {\n";
 		foreach my $line (@newFields){
