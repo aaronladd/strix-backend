@@ -21,7 +21,7 @@ sub rebuildContact {
 	my ($nagAcctPath, $count, $contactId);
 	$nagAcctPath=$_[0];
 	$count=0;
-	$contactId=0;
+	$contactId=-1;
 	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
 	my $contactFile="$nagAcctPath/contacts/contacts.cfg";
 	my $contactBackup="$nagAcctPath/contacts/contacts.bkp_cfg";
@@ -33,7 +33,6 @@ sub rebuildContact {
 	open CONTACTFILE, '>', "$contactFile" or die $!;
 	
 	while($contactId < $#{$dataPull}){
-		$dataPull->[$contactId][$count]=substr $dataPull->[$contactId][$count], -2, 2;
 		
 		for $count (0 .. $#{$dataPull->[0]}-3){
 			if($dataPull->[$contactId][$count+2]){
@@ -51,7 +50,7 @@ sub rebuildContact {
 		foreach my $line (@newFields){
 			print CONTACTFILE "\t$line\n";
 		}
-		print CONTACTFILE "}";
+		print CONTACTFILE "}\n";
 		
 		@newFields=();
 		$count=0;
