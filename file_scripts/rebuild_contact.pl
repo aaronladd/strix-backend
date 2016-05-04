@@ -29,11 +29,12 @@ sub rebuildContact {
 	my @newFields=();
 
 	rename $contactFile, $contactBackup;
-	print "$contactFile\n";
+	
 	open CONTACTFILE, '>', "$contactFile" or die $!;
 	
 	while($contactId < $#{$dataPull}){
 		$dataPull->[$contactId][$count]=substr $dataPull->[$contactId][$count], -2, 2;
+		
 		for $count (0 .. $#{$dataPull->[0]}-3){
 			if($dataPull->[$contactId][$count+2]){
 				push @newFields, "$contactFields[$count] $dataPull->[$contactId][$count+2]";
@@ -42,6 +43,7 @@ sub rebuildContact {
 			}
 			$count++;
 		}
+		
 		push @newFields, "$contactFields[7] $dataPull->[$contactId][9]";
 		push @newFields, "$contactFields[8] $dataPull->[$contactId][9]";
 		
