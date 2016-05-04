@@ -18,11 +18,13 @@ sub main {
 }
 
 sub rebuildAllHosts {
-	my ($nagAcctPath, $count, $hostId, $hostFile, $services);
+	my ($nagAcctPath, $count, $hostId, $hostFile, $hostFileNumber, $services, $serviceNum, $accountId, $queryHostId);
 	$nagAcctPath=$_[0];
+	$accountId=$_[1];
 	$count=0;
-	$hostId=0;
-	my $hosts=dataBasePull(dataBaseConnection(),$_[1],1);
+	$hostId=-1;
+	$serviceNum=-1;
+	my $hosts=dataBasePull(dataBaseConnection(),$accountId,1);
 	my $hostDir="$nagAcctPath/hosts";
 	my $hostDirBackup="$nagAcctPath/hosts_bkp";
 	my @hostFields=("host_name", "alias", "address", "account_type", "contacts", "contact_groups");
@@ -32,40 +34,40 @@ sub rebuildAllHosts {
 	rename $hostDir, $hostDirBackup;
 	mkdir $hostDir || die $!;
 
-	while($hostId < $#{$dataPull->[0]}){
-		
-		$hostFile="$hostDir/host$hostId.cfg";
+	while($hostId < $#{$dataPull}){
+		$hostId++;
+		$hostFileNumber=$hostId+1;
+		$hostFile="$hostDir/host$hostFileNumber.cfg";
 	
 		open HOSTFILE, '>', "$hostFile" or die $!;
 
-		for $count (0 .. $#hostFields){
-			if($hosts->[$hostId][$count+1] ne "NULL"){
-				push @newFields, "$hostFields[$count] $hosts->[$hostId][$count+2]";
+		for $count (2 .. $#{$dataPull->[0]}){
+			if($hosts->[$hostId][$count]){
+				push @newFields, "$hostFields[$count-2] $hosts->[$hostId][$count]";
 			} else {
-				push @newFields, ";$hostFields[$count]";
+				push @newFields, ";$hostFields[$count-2]";
 			}
-			$count++;
 		}
 		
 		print HOSTFILE "define host {\n";
 		foreach my $line (@newFields){
 			print HOSTFILE "\t$line\n";
 		}
-		print HOSTFILE "}";
+		print HOSTFILE "}\n";
 		
 		@newFields=();
 		$count=0;
 		
-		$services=dataBasePull(dataBaseConnection(),$_[1],2,$hostId+1);
+		$services=dataBasePull(dataBaseConnection(),$_[1],2,$hosts->[$hostId][1]);
 		
-		while $serviceNum < $#{$services->[0]}){
-			for $count (0 .. $#serviceFields){
-				if($services->[$hostId][$count+3] ne "NULL"){
-					push @newFields, "$hostFields[$count] $services->[$hostId][$count+2]";
+		while ($serviceNum < $#{$services}){
+		
+			for $count (3 .. $#{$services->[0]}){
+				if($services->[$hostId][$count]){
+					push @newFields, "$hostFields[$count-3] $services->[$hostId][$count]";
 				} else {
-					push @newFields, ";$hostFields[$count]";
+					push @newFields, ";$hostFields[$count-3]";
 				}
-				$count++;
 			}
 		
 		
@@ -73,14 +75,12 @@ sub rebuildAllHosts {
 			foreach my $line (@newFields){
 				print HOSTFILE "\t$line\n";
 			}
-			print HOSTFILE "}";
+			print HOSTFILE "}\n";
 		
 		}
 		
 		@newFields=();
 		$count=0;
-		$hostId++;
-		
 		close HOSTFILE;
 	}
 }
@@ -95,7 +95,7 @@ sub dataBasePull {
 	
 	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
 	$queryList[1]="SELECT * FROM nagios_host WHERE account_id='$accountId'";
-	$queryList[2]="SELECT * FROM nagios_host_services WHERE account_id='$accountId' AND host_id='0$hostId'";
+	$queryList[2]="SELECT * FROM nagios_host_services WHERE account_id='$accountId' AND host_id='$hostId'";
 	
 	$sth=$dbh->prepare($queryList[$queryNum]) || die "Prepare failed: $DBI::errstr\n";
 	
