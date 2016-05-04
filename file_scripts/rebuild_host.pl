@@ -34,14 +34,14 @@ sub rebuildAllHosts {
 	rename $hostDir, $hostDirBackup;
 	mkdir $hostDir || die $!;
 
-	while($hostId < $#{$dataPull}){
+	while($hostId < $#{$hosts}){
 		$hostId++;
 		$hostFileNumber=$hostId+1;
 		$hostFile="$hostDir/host$hostFileNumber.cfg";
 	
 		open HOSTFILE, '>', "$hostFile" or die $!;
 
-		for $count (2 .. $#{$dataPull->[0]}){
+		for $count (2 .. $#{$hosts->[0]}){
 			if($hosts->[$hostId][$count]){
 				push @newFields, "$hostFields[$count-2] $hosts->[$hostId][$count]";
 			} else {
@@ -86,7 +86,7 @@ sub rebuildAllHosts {
 }
 
 sub dataBasePull {
-	my ($dbh, $accountId, $queryNum, $sth, $dump);
+	my ($dbh, $accountId, $queryNum, $sth, $dump, $hostId);
 	my @queryList;
 	$dbh=$_[0];
 	$accountId=$_[1];
