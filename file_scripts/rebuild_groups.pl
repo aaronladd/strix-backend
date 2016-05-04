@@ -23,7 +23,7 @@ sub editContactsGroup {
 	$groupId=0;
 	my $contactsGroupFile="$nagAcctPath/contacts/contacts_group.cfg";
 	my $contactsGroupBackup="$nagAcctPath/contacts/contacts_group.bkp_cfg";
-	my @contactGroupFields=(";group_id","contactgroup_name", "alias", "members");
+	my @contactGroupFields=("contactgroup_name", "alias", "members");
 	my @newFields=();
 	
 	
@@ -33,7 +33,7 @@ sub editContactsGroup {
 
 	while($groupId < $#{$dataPull->[0]}){
 		$dataPull->[$groupId][$count]=substr $dataPull->[$groupId][$count], -2, 2;
-		for $count (0 .. $#contactGroupFields){
+		for $count (0 .. $#{$dataPull->[0]}-3){
 			push @newFields, "$contactGroupFields[$count] $dataPull->[$contactId][$count+1]";
 			$count++;
 		}
