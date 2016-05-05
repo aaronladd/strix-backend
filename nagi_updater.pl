@@ -24,7 +24,7 @@ sub main {
 }
 
 sub accountCreation{
-	system "nohup /home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 > /var/log/rebuild_contact.log &";
+	system "nohup /home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 &";
 	#rowDelete(dataBaseConnection(),$accountId);
 }
 
@@ -35,7 +35,7 @@ sub fileRebuild{
 	my $host=$_->[4];
 	
 	if ($contact == 1){
-		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_contact.pl $accountId 2>&1 > /var/log/rebuild_contact.log &";
+		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_contact.pl $accountId 2>&1 &";
 	}
 	
 	if ($cgroup == 1){
