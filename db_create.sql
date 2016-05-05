@@ -166,3 +166,4 @@ CREATE USER 'nagiTest'@'localhost' IDENTIFIED BY 'hV22buZAVFk22fx';
 GRANT ALL ON nagidb.* TO 'nagiTest'@'localhost';
 GRANT ALL ON strixdb.* TO 'nagiTest'@'localhost';
 GRANT ALL ON strixProducts.* TO 'nagiTest'@'localhost';
+GRANT ALL ON nagiUpdates.* TO 'nagiTest'@'localhost';
