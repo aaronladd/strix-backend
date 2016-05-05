@@ -25,6 +25,7 @@ sub main {
 sub accountCreation{
 	my $accountId=$_->[0][0];
 	exec '\home\nagios\scripting\create_account.pl', $accountId;
+	#rowDelete(dataBaseConnection(),$accountId);
 }
 
 sub fileRebuild{
@@ -44,7 +45,7 @@ sub fileRebuild{
 	if ($host == 1){
 		exec '\home\nagios\scripting\rebuild_host.pl', $accountId;
 	}
-	
+	#rowDelete(dataBaseConnection(),$accountId);
 }
 
 sub dataBaseConnection {
@@ -68,4 +69,16 @@ sub dataBasePull {
 	$sth->finish();
 	$dbh->disconnect || die "Failed to disconnect\n";
 	return $dump;
+}
+
+sub rowDelete {
+	my $dbh=$_[0];
+	my ($sth, $dump, $query);
+	
+	$query="DELETE FROM accounts_updated WHERE account_id='$_[1]";
+	
+	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr\n";
+	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
+	$sth->finish();
+	$dbh->disconnect || die "Failed to disconnect\n";
 }
