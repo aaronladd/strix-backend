@@ -9,15 +9,18 @@ main(@ARGV);
 
 sub main {
 	my $dataPull=dataBasePull(dataBaseConnection());
-	my $row=0;
+	my $row=-1;
 	
-	while($row<$#{$dataPull}){
-		if($dataPull->[$row][1] eq "N"){
-			accountCreation($dataPull->[$row]);
-		} else {
-			fileRebuild($dataPull->[$row]);
-		}
+	while($row<$#{$dataPull->[0]}){
 		$row++;
+		print "$dataPull->[$row][1]\n";
+		if($dataPull->[$row][1] eq "N"){
+			print "$dataPull->[$row]\n";
+			#accountCreation($dataPull->[$row]);
+		} else {
+			print "$dataPull->[$row]\n";
+			#fileRebuild($dataPull->[$row]);
+		}
 	}
 	
 }
