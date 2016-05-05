@@ -24,7 +24,7 @@ sub main {
 
 sub accountCreation{
 	my $accountId=$_->[0][0];
-	exec '\home\nagios\scripting\strix-backend\file_scripts\create_account.pl', $accountId;
+	exec '/home/nagios/scripting/strix-backend/file_scripts/create_account.pl', $accountId;
 	#rowDelete(dataBaseConnection(),$accountId);
 }
 
@@ -35,15 +35,15 @@ sub fileRebuild{
 	my $host=$_->[4];
 	
 	if ($contact == 1){
-		exec '\home\nagios\scripting\strix-backend\file_scripts\rebuild_contact.pl', $accountId;
+		exec '/home/nagios/scripting/strix-backend/file_scripts/rebuild_contact.pl', $accountId;
 	}
 	
 	if ($cgroup == 1){
-		exec '\home\nagios\scripting\strix-backend\file_scripts\rebuild_groups.pl', $accountId;
+		exec '/home/nagios/scripting/strix-backend/file_scripts/rebuild_groups.pl', $accountId;
 	}
 	
 	if ($host == 1){
-		exec '\home\nagios\scripting\strix-backend\file_scripts\rebuild_host.pl', $accountId;
+		exec '/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl', $accountId;
 	}
 	#rowDelete(dataBaseConnection(),$accountId);
 }
@@ -53,7 +53,7 @@ sub dataBaseConnection {
 	my $user='nagiTest';
 	my $pass='hV22buZAVFk22fx';
 	
-	my $dbh=DBI->connect($dsn,$user,$pass) || die "Error opening database: $DBI::errstr\n";
+	my $dbh=DBI->connect($dsn,$user,$pass) || die "Error opening database: $DBI::errstr/n";
 	return ($dbh);
 }
 
@@ -63,11 +63,11 @@ sub dataBasePull {
 	
 	$query="SELECT * FROM accounts_updated";
 	
-	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr\n";
-	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";  
+	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr/n";
+	$sth->execute() || die "Couldn't execute query: $DBI::errstr/n";  
 	$dump=$sth->fetchall_arrayref;
 	$sth->finish();
-	$dbh->disconnect || die "Failed to disconnect\n";
+	$dbh->disconnect || die "Failed to disconnect/n";
 	return $dump;
 }
 
@@ -77,8 +77,8 @@ sub rowDelete {
 	
 	$query="DELETE FROM accounts_updated WHERE account_id='$_[1]";
 	
-	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr\n";
-	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
+	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr/n";
+	$sth->execute() || die "Couldn't execute query: $DBI::errstr/n";
 	$sth->finish();
-	$dbh->disconnect || die "Failed to disconnect\n";
+	$dbh->disconnect || die "Failed to disconnect/n";
 }
