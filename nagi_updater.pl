@@ -24,26 +24,26 @@ sub main {
 
 sub accountCreation{
 	my $accountId=$_->[0][0];
-	exec '\home\nagios\scripting\create_account.pl', $accountId;
+	exec '\home\nagios\scripting\strix-backend\file_scripts\create_account.pl', $accountId;
 	#rowDelete(dataBaseConnection(),$accountId);
 }
 
 sub fileRebuild{
-	my $accountId=$_->[0][0];
-	my $contact=$_->[0][2];
-	my $cgroup=$_->[0][3];
-	my $host=$_->[0][4];
+	my $accountId=$_->[0];
+	my $contact=$_->[2];
+	my $cgroup=$_->[3];
+	my $host=$_->[4];
 	
 	if ($contact == 1){
-		exec '\home\nagios\scripting\rebuild_contact.pl', $accountId;
+		exec '\home\nagios\scripting\strix-backend\file_scripts\rebuild_contact.pl', $accountId;
 	}
 	
 	if ($cgroup == 1){
-		exec '\home\nagios\scripting\rebuild_groups.pl', $accountId;
+		exec '\home\nagios\scripting\strix-backend\file_scripts\rebuild_groups.pl', $accountId;
 	}
 	
 	if ($host == 1){
-		exec '\home\nagios\scripting\rebuild_host.pl', $accountId;
+		exec '\home\nagios\scripting\strix-backend\file_scripts\rebuild_host.pl', $accountId;
 	}
 	#rowDelete(dataBaseConnection(),$accountId);
 }
