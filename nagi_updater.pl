@@ -16,15 +16,15 @@ sub main {
 		if($dataPull->[$row][1] eq "C"){
 			accountCreation($dataPull->[$row][0]);
 		} else {
-			print "placeholder\n"
-			#fileRebuild($dataPull->[$row]);
+			
+			fileRebuild($dataPull->[$row]);
 		}
 	}
 	
 }
 
 sub accountCreation{
-	system "nohup /home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 &";
+	system "/home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 &";
 	#rowDelete(dataBaseConnection(),$accountId);
 }
 
@@ -39,11 +39,11 @@ sub fileRebuild{
 	}
 	
 	if ($cgroup == 1){
-		system '/home/nagios/scripting/strix-backend/file_scripts/rebuild_groups.pl', $accountId;
+		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_groups.pl $accountId 2>&1 &";
 	}
 	
 	if ($host == 1){
-		system '/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl', $accountId;
+		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl' $accountId 2>&1 &";
 	}
 	#rowDelete(dataBaseConnection(),$accountId);
 }
