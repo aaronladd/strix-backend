@@ -35,11 +35,11 @@ sub rebuildContact {
 	while($contactId < $#{$dataPull}){
 		$contactId++;
 		
-		for $count (0 .. $#{$dataPull->[0]}-3){
-			if($dataPull->[$contactId][$count+2]){
-				push @newFields, "$contactFields[$count] $dataPull->[$contactId][$count+2]";
+		for $count (2 .. $#{$dataPull->[0]}-3){
+			if($dataPull->[$contactId][$count]){
+				push @newFields, "$contactFields[$count-2] $dataPull->[$contactId][$count]";
 			} else {
-				push @newFields, ";$contactFields[$count]";
+				push @newFields, ";$contactFields[$count-2]";
 			}
 			$count++;
 		}
