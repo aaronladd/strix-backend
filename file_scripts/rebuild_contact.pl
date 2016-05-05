@@ -33,6 +33,7 @@ sub rebuildContact {
 	open CONTACTFILE, '>', "$contactFile" or die $!;
 	
 	while($contactId < $#{$dataPull}){
+		$contactId++;
 		
 		for $count (0 .. $#{$dataPull->[0]}-3){
 			if($dataPull->[$contactId][$count+2]){
@@ -54,7 +55,6 @@ sub rebuildContact {
 		
 		@newFields=();
 		$count=0;
-		$contactId++;
 	}
 	
 	close CONTACTFILE;
