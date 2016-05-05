@@ -14,7 +14,7 @@ sub main {
 	while($row<$#{$dataPull}){
 		$row++;
 		if($dataPull->[$row][1] eq "C"){
-			accountCreation($dataPull->[$row]);
+			accountCreation($dataPull->[$row][0]);
 		} else {
 			fileRebuild($dataPull->[$row]);
 		}
@@ -23,8 +23,7 @@ sub main {
 }
 
 sub accountCreation{
-	my $accountId=$_->[0][0];
-	exec '/home/nagios/scripting/strix-backend/file_scripts/create_account.pl', $accountId;
+	exec '/home/nagios/scripting/strix-backend/file_scripts/create_account.pl', $_[0];
 	#rowDelete(dataBaseConnection(),$accountId);
 }
 
