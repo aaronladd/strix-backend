@@ -11,7 +11,7 @@ sub main {
 	my $dataPull=dataBasePull(dataBaseConnection());
 	my $row=0;
 	
-	while($row<$#{$dataPull->[0]}){
+	while($row<$#{$dataPull}){
 		if($dataPull->[$row][1] eq "N"){
 			accountCreation($dataPull->[$row]);
 		} else {
