@@ -30,6 +30,7 @@ sub rebuildContactsGroup {
 	open CONTACTGROUPFILE, '>', "$contactsGroupFile" or die $!;
 
 	while($groupId < $#{$dataPull}){
+		$groupId++;
 		
 		for $count (2 .. $#{$dataPull->[0]}){
 			if($dataPull->[$groupId][$count]){
@@ -45,7 +46,6 @@ sub rebuildContactsGroup {
 		
 		@newFields=();
 		$count=0;
-		$groupId++;
 	}
 	
 	close CONTACTGROUPFILE;
