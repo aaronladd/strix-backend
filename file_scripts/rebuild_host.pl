@@ -82,6 +82,7 @@ sub rebuildAllHosts {
 		
 		@newFields=();
 		$count=0;
+		$serviceNum=0;
 		close HOSTFILE;
 	}
 }
