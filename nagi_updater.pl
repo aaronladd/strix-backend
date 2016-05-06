@@ -16,7 +16,6 @@ sub main {
 		if($dataPull->[$row][1] eq "C"){
 			accountCreation($dataPull->[$row][0]);
 		} else {
-			
 			fileRebuild($dataPull->[$row]);
 		}
 	}
