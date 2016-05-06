@@ -28,10 +28,10 @@ sub accountCreation{
 }
 
 sub fileRebuild{
-	my $accountId=$_->[0];
-	my $contact=$_->[2];
-	my $cgroup=$_->[3];
-	my $host=$_->[4];
+	my $accountId=$_[0][0];
+	my $contact=$_[0][2];
+	my $cgroup=$_[0][3];
+	my $host=$_[0][4];
 	
 	if ($contact == 1){
 		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_contact.pl $accountId 2>&1 &";
@@ -42,7 +42,7 @@ sub fileRebuild{
 	}
 	
 	if ($host == 1){
-		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl' $accountId 2>&1 &";
+		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl $accountId 2>&1 &";
 	}
 	#rowDelete(dataBaseConnection(),$accountId);
 }
