@@ -92,23 +92,22 @@ sub dataBaseConnection {
 }
 
 #sub dataBasePull
-#	Arguments $dbh $accountId
+#	Arguments $dbh $accountId $queryNum
 #defines the query being used
 #prepares the query against the database connection then exectues it.
 #fetches all information returned by the database and sets it to $dump
 #finishes and disconnects from the database to stay clean
 #	Returns $dump
 sub dataBasePull {
-	my ($dbh, $accountId, $queryNum, $sth, $dump);
+	my ($dbh, $accountId, $sth, $dump);
 	my @queryList;
 	$dbh=$_[0];
 	$accountId=$_[1];
-	$queryNum=$_[2];
 	
 	$queryList[0]="SELECT email FROM account_information WHERE account_id='$accountId'";
 	$queryList[1]="SELECT * FROM nagios_contact WHERE account_id='$accountId'";
 	
-	$sth=$dbh->prepare($queryList[$queryNum]) || die "Prepare failed: $DBI::errstr\n";
+	$sth=$dbh->prepare($queryList[$_[2]]) || die "Prepare failed: $DBI::errstr\n";
 	
 	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";
 	
