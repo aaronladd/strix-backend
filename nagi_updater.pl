@@ -99,7 +99,7 @@ sub rowDelete {
 	my $dbh=$_[0];
 	my ($sth, $dump, $query);
 	
-	$query="DELETE FROM accounts_updated WHERE account_id='$_[1]";
+	$query="DELETE FROM accounts_updated WHERE account_id='$_[1]'";
 	
 	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr/n";
 	$sth->execute() || die "Couldn't execute query: $DBI::errstr/n";
