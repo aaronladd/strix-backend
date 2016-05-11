@@ -35,7 +35,7 @@ sub main {
 sub accountCreation{
 	#runs the create_account script in the background passing the accountid as an argument
 	system "/home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 >> /var/log/nagios/account_creation.log &";
-	rowDelete(dataBaseConnection(),$accountId);
+	rowDelete(dataBaseConnection(),$_[0]);
 }
 
 #Subroutine accountCreation
