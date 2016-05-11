@@ -73,11 +73,9 @@ sub dataBasePull {
 	
 	$query="SELECT * FROM account_information WHERE account_id='$_[1]'";
 	
-	print "Preparing Query";
 	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr\n";
 	$sth->execute() || die "Couldn't execute query: $DBI::errstr\n";  
 	$dump=$sth->fetchall_arrayref;
-	print "Data Fetched"
 	$sth->finish();
 	$dbh->disconnect || die "Failed to disconnect\n";
 	return $dump;
