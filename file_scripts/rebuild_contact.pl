@@ -73,7 +73,6 @@ sub rebuildContact {
 		
 		#nulling @newFields and clearing the count for the next run
 		@newFields=();
-		$count=0;
 	}
 	
 	close CONTACTFILE;
