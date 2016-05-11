@@ -27,7 +27,6 @@ sub main {
 sub rebuildContact {
 	my ($nagAcctPath, $count, $contactId);
 	$nagAcctPath=$_[0];
-	$count=0;
 	$contactId=-1;
 	my $dataPull=dataBasePull(dataBaseConnection(),$_[1],1);
 	my $contactFile="$nagAcctPath/contacts/contacts.cfg";
