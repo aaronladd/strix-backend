@@ -17,7 +17,6 @@ sub main {
 	
 	#iterates through every row if the account is being created it calls one sub otherwise it calls the other.
 	while($row<=$#{$dataPull}){
-		$row++;
 		if($dataPull->[$row][1] eq "C"){
 			#calls accountCreation passing only the accountId
 			accountCreation($dataPull->[$row][0]);
@@ -25,6 +24,7 @@ sub main {
 			#calls fileRebuild passing the array
 			fileRebuild($dataPull->[$row]);
 		}
+		$row++;
 	}
 	
 }
