@@ -13,6 +13,7 @@ main();
 #iterates through every row 
 sub main {
 	my $dataPull=dataBasePull(dataBaseConnection());
+	rowDelete(dataBaseConnection());
 	my $row=0;
 	
 	#iterates through every row if the account is being created it calls one sub otherwise it calls the other.
@@ -35,7 +36,6 @@ sub main {
 sub accountCreation{
 	#runs the create_account script in the background passing the accountid as an argument
 	system "/home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 >> /var/log/nagiScripts/account_creation.log &";
-	#rowDelete(dataBaseConnection(),$_[0]);
 }
 
 #Subroutine accountCreation
@@ -58,7 +58,6 @@ sub fileRebuild{
 	if ($host == 1){
 		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl $accountId 2>&1 >> /var/log/nagiScripts/host_rebuilding.log &";
 	}
-	#rowDelete(dataBaseConnection(),$accountId);
 }
 
 #sub dataBaseConnection
@@ -97,11 +96,8 @@ sub dataBasePull {
 #	Returns $dump
 sub rowDelete {
 	my $dbh=$_[0];
-	my ($sth, $dump, $query);
 	
-	$query="DELETE FROM accounts_updated WHERE account_id='$_[1]'";
-	
-	$sth=$dbh->prepare($query) || die "Prepare failed: $DBI::errstr/n";
+	my $sth=$dbh->prepare("Truncate table") || die "Prepare failed: $DBI::errstr/n";
 	$sth->execute() || die "Couldn't execute query: $DBI::errstr/n";
 	$sth->finish();
 	$dbh->disconnect || die "Failed to disconnect/n";
