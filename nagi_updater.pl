@@ -35,7 +35,7 @@ sub main {
 sub accountCreation{
 	#runs the create_account script in the background passing the accountid as an argument
 	system "/home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 >> /var/log/nagiScripts/account_creation.log &";
-	rowDelete(dataBaseConnection(),$_[0]);
+	#rowDelete(dataBaseConnection(),$_[0]);
 }
 
 #Subroutine accountCreation
@@ -58,7 +58,7 @@ sub fileRebuild{
 	if ($host == 1){
 		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl $accountId 2>&1 >> /var/log/nagiScripts/host_rebuilding.log &";
 	}
-	rowDelete(dataBaseConnection(),$accountId);
+	#rowDelete(dataBaseConnection(),$accountId);
 }
 
 #sub dataBaseConnection
