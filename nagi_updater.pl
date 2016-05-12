@@ -97,7 +97,7 @@ sub dataBasePull {
 sub rowDelete {
 	my $dbh=$_[0];
 	
-	my $sth=$dbh->prepare("Truncate table") || die "Prepare failed: $DBI::errstr/n";
+	my $sth=$dbh->prepare("Truncate table accounts_updated") || die "Prepare failed: $DBI::errstr/n";
 	$sth->execute() || die "Couldn't execute query: $DBI::errstr/n";
 	$sth->finish();
 	$dbh->disconnect || die "Failed to disconnect/n";
