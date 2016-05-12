@@ -12,6 +12,12 @@ account_id, account_type, service, create_date, email
 '2', 'web_glance_gaze', '1', 'CURDATE()', 'johnmminor@inbound.plus'
 );
 
+INSERT INTO account_information(
+account_id, account_type, service, create_date, email
+) VALUES (
+'3', 'web_glance_gaze', '1', 'CURDATE()', 'fall3ns3riphan@hotmail.com'
+);
+
 INSERT INTO nagios_contact(
 account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, receive
 ) VALUES (
@@ -28,6 +34,24 @@ INSERT INTO nagios_contact(
 account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, misc, receive
 ) VALUES (
 '2', '201', '201_john', 'john', 'web_glance_gaze', '201_group_beta', 'johnmminor@inbound.plus', 3334445555, 6667778888, '1'
+);
+
+INSERT INTO nagios_contact(
+account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, misc, receive
+) VALUES (
+'3', '301', '301_Aaron', 'Aaron', 'web_glance_gaze', '301_fallens_test', 'fall3ns3riphan@hotmail.com', 4194384292, 'lucillecfuhrman@inbound.plus', '1'
+);
+
+INSERT INTO nagios_contact(
+account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, receive
+) VALUES (
+'3', '302', '302_Kyle', 'Kyle', 'web_glance_gaze', '301_fallens_test', 'fallenseriphan@gmail.com', 4197692514, '1'
+);
+
+INSERT INTO nagios_contact(
+account_id, contact_id, contact_name, alias, account_type, contact_groups, email, phone, receive
+) VALUES (
+'3', '303', '303_Ladd', 'Ladd', 'web_glance_gaze', '301_fallens_test', 'laddkaaron@gmail.com', 9998887777, '1'
 );
 
 INSERT INTO nagios_contact_groups(
@@ -48,6 +72,12 @@ account_id, group_id, contactgroup_name, alias, members
 '2', '201', '201_group_beta', 'group_beta', 'john'
 );
 
+INSERT INTO nagios_contact_groups(
+account_id, group_id, contactgroup_name, alias, members
+) VALUES (
+'3', '301', '301_fallens_test', 'fallens_test', 'Aaron, Kyle, Ladd'
+);
+
 INSERT INTO nagios_host(
 account_id, host_id, host_name, alias, account_type, address, contact_groups
 ) VALUES (
@@ -64,6 +94,24 @@ INSERT INTO nagios_host(
 account_id, host_id, host_name, alias, account_type, address, contact_groups
 ) VALUES (
 '2', '201', 'john.localhost.net', 'johns_Host for Testing', 'web_glance_gaze', '127.0.0.1', '201_group_beta'
+);
+
+INSERT INTO nagios_host(
+account_id, host_id, host_name, alias, account_type, address, contact_groups
+) VALUES (
+'3', '301', 'apathabove.net', 'apathabove.net', 'web_glance_gaze', '159.203.246.51', '301_fallens_test'
+);
+
+INSERT INTO nagios_host(
+account_id, host_id, host_name, alias, account_type, address, contact_groups
+) VALUES (
+'3', '302', 'nagios.apathabove.net', 'nagios host', 'web_glance_gaze', '159.203.216.151', '301_fallens_test'
+);
+
+INSERT INTO nagios_host(
+account_id, host_id, host_name, alias, account_type, address, contacts
+) VALUES (
+'3', '303', 'clemensmobilewelding.net', 'clemens host', 'web_glance_gaze', '159.203.246.51', '301_Aaron'
 );
 
 INSERT INTO nagios_host_services(
@@ -88,6 +136,30 @@ INSERT INTO nagios_host_services(
 account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts, contact_groups
 ) VALUES (
 '2', '201', '20101', 'john.localhost.net', 'stupid_desc here', 'check_pop', 'web_glance_gaze', '201_john', '201_group_beta'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts
+) VALUES (
+'3', '301', '30101', 'apathabove.net', 'stupid_desc here', 'check_ping', 'web_glance_gaze', '301_Aaron, 302_Kyle'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contact_groups
+) VALUES (
+'3', '301', '30102', 'apathabove.net', 'stupid_desc here', 'check_pop', 'web_glance_gaze', '301_fallens_test'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contact_groups
+) VALUES (
+'3', '302', '30201', 'nagios.apathabove.net', 'stupid_desc here', 'check_ping', 'web_glance_gaze', '301_fallens_test'
+);
+
+INSERT INTO nagios_host_services(
+account_id, host_id, service_num, host_name, service_description, check_command, account_type, contacts
+) VALUES (
+'3', '303', '30301', 'clemensmobilewelding.net', 'stupid_desc here', 'check_ping', 'web_glance_gaze', '303_Ladd'
 );
 
 use strixProducts;
@@ -115,13 +187,19 @@ use strixdb;
 INSERT INTO account_information(
 account_id, first_name, last_name, account_type, service, create_date, email, phone, address_one, city, state, zip, country
 ) VALUES (
-'1', 'lucille', 'fuhrman', 'web_glance_gander', 1, 'CURDATE()', 'lucillecfuhrman@inbound.plus', '1112223333', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States'
+'1', 'lucille', 'fuhrman', 'web_glance_gander', '1', 'CURDATE()', 'lucillecfuhrman@inbound.plus', '1112223333', '1445 Prudence Street', 'Dearborn', 'MI', '48124', 'United States'
 );
 
 INSERT INTO account_information(
 account_id, first_name, last_name, account_type, service, create_date, email, phone, address_one, address_two, city, state, zip, country
 ) VALUES (
 '2', 'john', 'minor', 'web_glance_gaze', '1', 'CURDATE()', 'johnmminor@inbound.plus', '8174574831', '4026 Waldeck Street', 'Apt 2A', 'Fort Worth', 'TX', '76112', 'United States'
+);
+
+INSERT INTO account_information(
+account_id, first_name, last_name, account_type, service, create_date, email, phone, address_one, city, state, zip, country
+) VALUES (
+'3', 'Aaron', 'Ladd', 'web_glance_gaze', '1', 'CURDATE()', 'fallenseriphan@gmail.com', '4194384292', '4366 S 3760 W', 'West Valley City', 'UT', '84120', 'United States'
 );
 
 INSERT INTO billing_information(
@@ -142,6 +220,12 @@ account_id, billing_id, first_name, last_name, email, address_one, address_two, 
 '2', '201','John', 'Minor', 'johnmminor@inbound.plus', '4026 Waldeck Street', 'Apt 2A', 'Fort Worth', 'TX', '76112', 'United States', '1', '0', '5445197118256029', '6/2018', '402'
 );
 
+INSERT INTO billing_information(
+account_id, billing_id, first_name, last_name, email, address_one, city, state, zip, country, pref_payment_type, paypal
+) VALUES (
+'3', '301', 'Aaron', 'Ladd', 'fallenseriphan@gmail.com', '4366 S 3760 W', 'West Valley City', 'UT', '84120', 'United States', '1', '1'
+);
+
 INSERT INTO login(
 account_id, username, password, email
 ) VALUES (
@@ -152,6 +236,12 @@ INSERT INTO login(
 account_id, username, password, email
 ) VALUES (
 '2', 'johnmminor', 'password', 'johnmminor@inbound.plus'
+);
+
+INSERT INTO login(
+account_id, username, password, email
+) VALUES (
+'3', 'aaronladd', 'password', 'fallenseriphan@gmail.com'
 );
 
 INSERT INTO invoices(
