@@ -199,7 +199,7 @@ account_id, first_name, last_name, account_type, service, create_date, email, ph
 INSERT INTO account_information(
 account_id, first_name, last_name, account_type, service, create_date, email, phone, address_one, city, state, zip, country
 ) VALUES (
-'3', 'Aaron', 'Ladd', 'web_glance_gaze', '1', 'CURDATE()', 'fallenseriphan@gmail.com', '4194384292', '4366 S 3760 W', 'West Valley City', 'UT', '84120', 'United States'
+'3', 'Aaron', 'Ladd', 'web_glance_gaze', '1', 'CURDATE()', 'fall3ns3riphan@hotmail.com', '4194384292', '4366 S 3760 W', 'West Valley City', 'UT', '84120', 'United States'
 );
 
 INSERT INTO billing_information(
