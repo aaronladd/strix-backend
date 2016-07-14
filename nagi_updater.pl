@@ -35,7 +35,7 @@ sub main {
 #Routine starts the create_account script and then deletes the row
 sub accountCreation{
 	#runs the create_account script in the background passing the accountid as an argument
-	system "/home/nagios/scripting/strix-backend/file_scripts/create_account.pl $_[0] 2>&1 >> /var/log/nagiScripts/account_creation.log &";
+	system "/home/nagihost/bin/file_scripts/create_account.pl $_[0] 2>&1 >> /var/log/nagiScripts/account_creation.log &";
 }
 
 #Subroutine accountCreation
@@ -48,15 +48,15 @@ sub fileRebuild{
 	my $host=$_[0][4];
 	
 	if ($contact == 1){
-		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_contact.pl $accountId 2>&1 >> /var/log/nagiScripts/contact_rebuilding.log &";
+		system "/home/nagihost/bin/file_scripts/rebuild_contact.pl $accountId 2>&1 >> /var/log/nagiScripts/contact_rebuilding.log &";
 	}
 	
 	if ($cgroup == 1){
-		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_groups.pl $accountId 2>&1 >> /var/log/nagiScripts/group_rebuilding.log &";
+		system "/home/nagihost/bin/file_scripts/rebuild_groups.pl $accountId 2>&1 >> /var/log/nagiScripts/group_rebuilding.log &";
 	}
 	
 	if ($host == 1){
-		system "/home/nagios/scripting/strix-backend/file_scripts/rebuild_host.pl $accountId 2>&1 >> /var/log/nagiScripts/host_rebuilding.log &";
+		system "/home/nagihost/bin/file_scripts/rebuild_host.pl $accountId 2>&1 >> /var/log/nagiScripts/host_rebuilding.log &";
 	}
 }
 
